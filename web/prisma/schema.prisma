@@ -1,0 +1,43 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/client"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("POSTGRES_PRISMA_URL") // uses connection pooling
+  directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
+}
+
+model ContractTemplate {
+  id        String     @id @default(cuid())
+  name      String
+  content   String     // JSON string representing the form structure
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  contracts Contract[]
+}
+
+model Contract {
+  id            String           @id @default(cuid())
+  identifier    String           // Room - Condo
+  templateId    String
+  template      ContractTemplate @relation(fields: [templateId], references: [id])
+  data          String           // JSON string of filled data
+  type          String           @default("LEASE") // LEASE, BUY
+  status        String           @default("DRAFT") // DRAFT, SENT, SIGNED
+  token         String?          @unique // For signing link (Deprecated)
+  signature     String?          // Base64 or path (Deprecated)
+  signedAt      DateTime?
+
+  // New Signing Workflow
+  lessorToken     String? @unique
+  lesseeToken     String? @unique
+  lessorSignature String?
+  lesseeSignature String?
+  lessorSignedAt  DateTime?
+  lesseeSignedAt  DateTime?
+
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
+}

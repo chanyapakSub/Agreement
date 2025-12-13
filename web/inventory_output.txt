@@ -1,0 +1,375 @@
+--- SECTIONS ---
+
+    {
+        id: 'sec_appliances',
+        title: 'รายการกุญแจและเครื่องใช้ไฟฟ้า',
+        fields: [
+            { id: 'app_aircon_qty', label: 'Air conditioner with remote control/เครื่องปรับอากาศ + รีโมท (จำนวน)', type: 'text', placeholder: '1' },
+            { id: 'app_aircon_note', label: 'Air conditioner with remote control/เครื่องปรับอากาศ + รีโมท (หมายเหตุ)', type: 'text' },
+            { id: 'app_waterheater_qty', label: 'Water heater/เครื่องทำน้ำอุ่น (จำนวน)', type: 'text', placeholder: '1' },
+            { id: 'app_waterheater_note', label: 'Water heater/เครื่องทำน้ำอุ่น (หมายเหตุ)', type: 'text' },
+            { id: 'app_washingmachine_qty', label: 'Washing machine/เครื่องซักผ้า (จำนวน)', type: 'text', placeholder: '1' },
+            { id: 'app_washingmachine_note', label: 'Washing machine/เครื่องซักผ้า (หมายเหตุ)', type: 'text' },
+            { id: 'app_dryer_qty', label: 'Dryer/เครื่องอบผ้า (จำนวน)', type: 'text', placeholder: '1' },
+            { id: 'app_dryer_note', label: 'Dryer/เครื่องอบผ้า (หมายเหตุ)', type: 'text' },
+            { id: 'app_airpurifier_qty', label: 'Air Purifier/เครื่องกรองอากาศ (จำนวน)', type: 'text', placeholder: '1' },
+            { id: 'app_airpurifier_note', label: 'Air Purifier/เครื่องกรองอากาศ (หมายเหตุ)', type: 'text' },
+            { id: 'app_stove_qty', label: 'Cooker Hood + Electric Stove/เครื่องดูดควัน+เตาไฟฟ้า (จำนวน)', type: 'text', placeholder: '1' },
+            { id: 'app_stove_note', label: 'Cooker Hood + Electric Stove/เครื่องดูดควัน+เตาไฟฟ้า (หมายเหตุ)', type: 'text' },
+            { id: 'app_lightbulb_qty', label: 'Light Bulb/หลอดไฟ (จำนวน)', type: 'text', placeholder: '1' },
+            { id: 'app_lightbulb_note', label: 'Light Bulb/หลอดไฟ (หมายเหตุ)', type: 'text' },
+            { id: 'app_tv_qty', label: 'TV with remote/โทรทัศน์+รีโมท (จำนวน)', type: 'text', placeholder: '1' },
+            { id: 'app_tv_note', label: 'TV with remote/โทรทัศน์+รีโมท (หมายเหตุ)', type: 'text' },
+            { id: 'app_fridge_qty', label: 'Refrigerator/ตู้เย็น (จำนวน)', type: 'text', placeholder: '1' },
+            { id: 'app_fridge_note', label: 'Refrigerator/ตู้เย็น (หมายเหตุ)', type: 'text' },
+            { id: 'app_microwave_qty', label: 'Microwave/ไมโครเวฟ (จำนวน)', type: 'text', placeholder: '1' },
+            { id: 'app_microwave_note', label: 'Microwave/ไมโครเวฟ (หมายเหตุ)', type: 'text' },
+            { id: 'app_oven_qty', label: 'Electric oven/เตาไฟฟ้า (จำนวน)', type: 'text', placeholder: '1' },
+            { id: 'app_oven_note', label: 'Electric oven/เตาไฟฟ้า (หมายเหตุ)', type: 'text' },
+            { id: 'app_kettle_qty', label: 'Kettle/กาต้มน้ำ (จำนวน)', type: 'text', placeholder: '1' },
+            { id: 'app_kettle_note', label: 'Kettle/กาต้มน้ำ (หมายเหตุ)', type: 'text' },
+            { id: 'app_iron_qty', label: 'Iron/เตารีด + Ironing board/โต๊ะรีดผ้า (จำนวน)', type: 'text', placeholder: '1' },
+            { id: 'app_iron_note', label: 'Iron/เตารีด + Ironing board/โต๊ะรีดผ้า (หมายเหตุ)', type: 'text' },
+            { id: 'app_fan_qty', label: 'Fan/พัดลม (จำนวน)', type: 'text', placeholder: '1' },
+            { id: 'app_fan_note', label: 'Fan/พัดลม (หมายเหตุ)', type: 'text' },
+            { id: 'app_lamp_qty', label: 'Lamp/โคมไฟ (จำนวน)', type: 'text', placeholder: '1' },
+            { id: 'app_lamp_note', label: 'Lamp/โคมไฟ (หมายเหตุ)', type: 'text' },
+            { id: 'app_chandelier_qty', label: 'Chandelier /โคมไฟเพดาน โคมไฟโมเดิร์น แชนเดอเลียร์ (จำนวน)', type: 'text', placeholder: '1' },
+            { id: 'app_chandelier_note', label: 'Chandelier /โคมไฟเพดาน โคมไฟโมเดิร์น แชนเดอเลียร์ (หมายเหตุ)', type: 'text' },
+            { id: 'key_room_qty', label: 'กุญแจสถานที่เช่า (Room Key) (จำนวน)', type: 'text', placeholder: '1' },
+            { id: 'key_room_note', label: 'กุญแจสถานที่เช่า (Room Key) (หมายเหตุ)', type: 'text' },
+            { id: 'key_card_qty', label: 'คีย์การ์ด (Key Card) (จำนวน)', type: 'text', placeholder: '1' },
+            { id: 'key_card_note', label: 'คีย์การ์ด (Key Card) (หมายเหตุ)', type: 'text' },
+            { id: 'key_bedroom_qty', label: 'กุญแจห้องนอน (Bed room Key) (จำนวน)', type: 'text', placeholder: '1' },
+            { id: 'key_bedroom_note', label: 'กุญแจห้องนอน (Bed room Key) (หมายเหตุ)', type: 'text' },
+            { id: 'key_kitchen_qty', label: 'กุญแจห้องครัว (Kitchen Room Key) (จำนวน)', type: 'text', placeholder: '1' },
+            { id: 'key_kitchen_note', label: 'กุญแจห้องครัว (Kitchen Room Key) (หมายเหตุ)', type: 'text' },
+            { id: 'key_mailbox_qty', label: 'กุญแจตู้จดหมาย (Mailbox Key) (จำนวน)', type: 'text', placeholder: '1' },
+            { id: 'key_mailbox_note', label: 'กุญแจตู้จดหมาย (Mailbox Key) (หมายเหตุ)', type: 'text' },
+            { id: 'key_sticker_qty', label: 'สติ๊กเกอร์รถ (Sticker for Car) (จำนวน)', type: 'text', placeholder: '1' },
+            { id: 'key_sticker_note', label: 'สติ๊กเกอร์รถ (Sticker for Car) (หมายเหตุ)', type: 'text' },
+            { id: 'key_epass_qty', label: 'เครื่องผ่านเข้าออกที่จอดรถ (E pass for Car) (จำนวน)', type: 'text', placeholder: '1' },
+            { id: 'key_epass_note', label: 'เครื่องผ่านเข้าออกที่จอดรถ (E pass for Car) (หมายเหตุ)', type: 'text' },
+        ]
+    },
+    {
+        id: 'sec_furniture',
+        title: 'รายการเฟอร์นิเจอร์',
+        fields: [
+            { id: 'furn_tvcabinet_qty', label: 'TV cabinet/ชั้นวางทีวี (จำนวน)', type: 'text', placeholder: '1' },
+            { id: 'furn_tvcabinet_note', label: 'TV cabinet/ชั้นวางทีวี (หมายเหตุ)', type: 'text' },
+            { id: 'furn_bed_qty', label: 'Bed with mattress/เตียงพร้อมฟูก (จำนวน)', type: 'text', placeholder: '1' },
+            { id: 'furn_bed_note', label: 'Bed with mattress/เตียงพร้อมฟูก (หมายเหตุ)', type: 'text' },
+            { id: 'furn_builtin_qty', label: 'Built-in cabinet/ตู้ชั้นวางสำเร็จ (จำนวน)', type: 'text', placeholder: '1' },
+            { id: 'furn_builtin_note', label: 'Built-in cabinet/ตู้ชั้นวางสำเร็จ (หมายเหตุ)', type: 'text' },
+            { id: 'furn_wardrobe_qty', label: 'Wardrobe/ตู้เสื้อผ้า (จำนวน)', type: 'text', placeholder: '1' },
+            { id: 'furn_wardrobe_note', label: 'Wardrobe/ตู้เสื้อผ้า (หมายเหตุ)', type: 'text' },
+            { id: 'furn_bedside_qty', label: 'Bedside table /โต๊ะข้างเตียง (จำนวน)', type: 'text', placeholder: '1' },
+            { id: 'furn_bedside_note', label: 'Bedside table /โต๊ะข้างเตียง (หมายเหตุ)', type: 'text' },
+            { id: 'furn_shower_qty', label: 'Shower room divider /ฉากกั้นห้องอาบน้ำ (จำนวน)', type: 'text', placeholder: '1' },
+            { id: 'furn_shower_note', label: 'Shower room divider /ฉากกั้นห้องอาบน้ำ (หมายเหตุ)', type: 'text' },
+            { id: 'furn_toilet_qty', label: 'Toilet + Toilet sprayer/ชักโครก+สายฉีดชำระ (จำนวน)', type: 'text', placeholder: '1' },
+            { id: 'furn_toilet_note', label: 'Toilet + Toilet sprayer/ชักโครก+สายฉีดชำระ (หมายเหตุ)', type: 'text' },
+            { id: 'furn_bathtub_qty', label: 'Bathtub/อ่างอาบน้ำ (จำนวน)', type: 'text', placeholder: '1' },
+            { id: 'furn_bathtub_note', label: 'Bathtub/อ่างอาบน้ำ (หมายเหตุ)', type: 'text' },
+            { id: 'furn_kitchen_qty', label: 'Kitchen set with sink /ชุดครัว พร้อมซิงค์ล้างมือ (จำนวน)', type: 'text', placeholder: '1' },
+            { id: 'furn_kitchen_note', label: 'Kitchen set with sink /ชุดครัว พร้อมซิงค์ล้างมือ (หมายเหตุ)', type: 'text' },
+            { id: 'furn_sink_qty', label: 'Sinks and faucets /อ่างล้างมือและก๊อกน้ำ (จำนวน)', type: 'text', placeholder: '1' },
+            { id: 'furn_sink_note', label: 'Sinks and faucets /อ่างล้างมือและก๊อกน้ำ (หมายเหตุ)', type: 'text' },
+            { id: 'furn_carpet_qty', label: 'Carpet/พรม (จำนวน)', type: 'text', placeholder: '1' },
+            { id: 'furn_carpet_note', label: 'Carpet/พรม (หมายเหตุ)', type: 'text' },
+            { id: 'furn_centertable_qty', label: 'Center table/โต๊ะกลางรับแขก (จำนวน)', type: 'text', placeholder: '1' },
+            { id: 'furn_centertable_note', label: 'Center table/โต๊ะกลางรับแขก (หมายเหตุ)', type: 'text' },
+            { id: 'furn_shoescabinet_qty', label: 'Shoes cabinet/ตู้ชั้นวางรองเท้า (จำนวน)', type: 'text', placeholder: '1' },
+            { id: 'furn_shoescabinet_note', label: 'Shoes cabinet/ตู้ชั้นวางรองเท้า (หมายเหตุ)', type: 'text' },
+            { id: 'furn_sofa_qty', label: 'Sofa/โซฟา (จำนวน)', type: 'text', placeholder: '1' },
+            { id: 'furn_sofa_note', label: 'Sofa/โซฟา (หมายเหตุ)', type: 'text' },
+            { id: 'furn_bedding_qty', label: 'Bedding set /ชุดที่นอน (จำนวน)', type: 'text', placeholder: '1' },
+            { id: 'furn_bedding_note', label: 'Bedding set /ชุดที่นอน (หมายเหตุ)', type: 'text' },
+            { id: 'furn_dressing_qty', label: 'Dressing table set/ชุดโต๊ะเครื่องแป้ง (จำนวน)', type: 'text', placeholder: '1' },
+            { id: 'furn_dressing_note', label: 'Dressing table set/ชุดโต๊ะเครื่องแป้ง (หมายเหตุ)', type: 'text' },
+            { id: 'furn_dining_qty', label: 'Dining table set with chair/ชุดโต๊ะทานอาหาร พร้อมเก้าอี้ (จำนวน)', type: 'text', placeholder: '1' },
+            { id: 'furn_dining_note', label: 'Dining table set with chair/ชุดโต๊ะทานอาหาร พร้อมเก้าอี้ (หมายเหตุ)', type: 'text' },
+            { id: 'furn_desk_qty', label: 'Desk table with chair/โต๊ะทำงานพร้อมเก้าอี้ (จำนวน)', type: 'text', placeholder: '1' },
+            { id: 'furn_desk_note', label: 'Desk table with chair/โต๊ะทำงานพร้อมเก้าอี้ (หมายเหตุ)', type: 'text' },
+            { id: 'furn_curtain_qty', label: 'Curtain/ผ้าม่าน (จำนวน)', type: 'text', placeholder: '1' },
+            { id: 'furn_curtain_note', label: 'Curtain/ผ้าม่าน (หมายเหตุ)', type: 'text' },
+            { id: 'furn_flooring_qty', label: 'Room laminate flooring /พื้นลามิเนต (จำนวน)', type: 'text', placeholder: '1' },
+            { id: 'furn_flooring_note', label: 'Room laminate flooring /พื้นลามิเนต (หมายเหตุ)', type: 'text' },
+            { id: 'furn_blind_qty', label: 'Bamboo blind /มู่ลี่ (จำนวน)', type: 'text', placeholder: '1' },
+            { id: 'furn_blind_note', label: 'Bamboo blind /มู่ลี่ (หมายเหตุ)', type: 'text' },
+            { id: 'furn_frame_qty', label: 'Picture frame /กรอบรูป (จำนวน)', type: 'text', placeholder: '1' },
+            { id: 'furn_frame_note', label: 'Picture frame /กรอบรูป (หมายเหตุ)', type: 'text' },
+            { id: 'furn_crockery_qty', label: 'Crockery Set ( photos)/ชุดถ้วยจาน ช้อนส้อม (ภาพถ่าย) (จำนวน)', type: 'text', placeholder: '1' },
+            { id: 'furn_crockery_note', label: 'Crockery Set ( photos)/ชุดถ้วยจาน ช้อนส้อม (ภาพถ่าย) (หมายเหตุ)', type: 'text' },
+            { id: 'furn_rack_qty', label: 'Clothes drying rack outside the balcony /ราวตากผ้านอกระเบียง (จำนวน)', type: 'text', placeholder: '1' },
+            { id: 'furn_rack_note', label: 'Clothes drying rack outside the balcony /ราวตากผ้านอกระเบียง (หมายเหตุ)', type: 'text' },
+        ]
+    },
+
+--- HTML ---
+
+  <div class="break-before-page">
+    <h2 class="font-bold text-center mb-4" style="font-size: 16pt;">กุญแจและเครื่องใช้ไฟฟ้า/Key and Electrical appliances</h2>
+    <table class="w-full border-collapse border border-black text-sm mb-8">
+        <thead>
+            <tr class="bg-gray-200">
+                <th class="border border-black p-2 w-1/2">List</th>
+                <th class="border border-black p-2 w-1/6">Quantity</th>
+                <th class="border border-black p-2">Note</th>
+            </tr>
+        </thead>
+        <tbody>
+            
+        <tr>
+            <td class="border border-black p-1">Air conditioner with remote control/เครื่องปรับอากาศ + รีโมท</td>
+            <td class="border border-black p-1 text-center">{{app_aircon_qty}}</td>
+            <td class="border border-black p-1">{{app_aircon_note}}</td>
+        </tr>
+        <tr>
+            <td class="border border-black p-1">Water heater/เครื่องทำน้ำอุ่น</td>
+            <td class="border border-black p-1 text-center">{{app_waterheater_qty}}</td>
+            <td class="border border-black p-1">{{app_waterheater_note}}</td>
+        </tr>
+        <tr>
+            <td class="border border-black p-1">Washing machine/เครื่องซักผ้า</td>
+            <td class="border border-black p-1 text-center">{{app_washingmachine_qty}}</td>
+            <td class="border border-black p-1">{{app_washingmachine_note}}</td>
+        </tr>
+        <tr>
+            <td class="border border-black p-1">Dryer/เครื่องอบผ้า</td>
+            <td class="border border-black p-1 text-center">{{app_dryer_qty}}</td>
+            <td class="border border-black p-1">{{app_dryer_note}}</td>
+        </tr>
+        <tr>
+            <td class="border border-black p-1">Air Purifier/เครื่องกรองอากาศ</td>
+            <td class="border border-black p-1 text-center">{{app_airpurifier_qty}}</td>
+            <td class="border border-black p-1">{{app_airpurifier_note}}</td>
+        </tr>
+        <tr>
+            <td class="border border-black p-1">Cooker Hood + Electric Stove/เครื่องดูดควัน+เตาไฟฟ้า</td>
+            <td class="border border-black p-1 text-center">{{app_stove_qty}}</td>
+            <td class="border border-black p-1">{{app_stove_note}}</td>
+        </tr>
+        <tr>
+            <td class="border border-black p-1">Light Bulb/หลอดไฟ</td>
+            <td class="border border-black p-1 text-center">{{app_lightbulb_qty}}</td>
+            <td class="border border-black p-1">{{app_lightbulb_note}}</td>
+        </tr>
+        <tr>
+            <td class="border border-black p-1">TV with remote/โทรทัศน์+รีโมท</td>
+            <td class="border border-black p-1 text-center">{{app_tv_qty}}</td>
+            <td class="border border-black p-1">{{app_tv_note}}</td>
+        </tr>
+        <tr>
+            <td class="border border-black p-1">Refrigerator/ตู้เย็น</td>
+            <td class="border border-black p-1 text-center">{{app_fridge_qty}}</td>
+            <td class="border border-black p-1">{{app_fridge_note}}</td>
+        </tr>
+        <tr>
+            <td class="border border-black p-1">Microwave/ไมโครเวฟ</td>
+            <td class="border border-black p-1 text-center">{{app_microwave_qty}}</td>
+            <td class="border border-black p-1">{{app_microwave_note}}</td>
+        </tr>
+        <tr>
+            <td class="border border-black p-1">Electric oven/เตาไฟฟ้า</td>
+            <td class="border border-black p-1 text-center">{{app_oven_qty}}</td>
+            <td class="border border-black p-1">{{app_oven_note}}</td>
+        </tr>
+        <tr>
+            <td class="border border-black p-1">Kettle/กาต้มน้ำ</td>
+            <td class="border border-black p-1 text-center">{{app_kettle_qty}}</td>
+            <td class="border border-black p-1">{{app_kettle_note}}</td>
+        </tr>
+        <tr>
+            <td class="border border-black p-1">Iron/เตารีด + Ironing board/โต๊ะรีดผ้า</td>
+            <td class="border border-black p-1 text-center">{{app_iron_qty}}</td>
+            <td class="border border-black p-1">{{app_iron_note}}</td>
+        </tr>
+        <tr>
+            <td class="border border-black p-1">Fan/พัดลม</td>
+            <td class="border border-black p-1 text-center">{{app_fan_qty}}</td>
+            <td class="border border-black p-1">{{app_fan_note}}</td>
+        </tr>
+        <tr>
+            <td class="border border-black p-1">Lamp/โคมไฟ</td>
+            <td class="border border-black p-1 text-center">{{app_lamp_qty}}</td>
+            <td class="border border-black p-1">{{app_lamp_note}}</td>
+        </tr>
+        <tr>
+            <td class="border border-black p-1">Chandelier /โคมไฟเพดาน โคมไฟโมเดิร์น แชนเดอเลียร์</td>
+            <td class="border border-black p-1 text-center">{{app_chandelier_qty}}</td>
+            <td class="border border-black p-1">{{app_chandelier_note}}</td>
+        </tr>
+        <tr>
+            <td class="border border-black p-1">กุญแจสถานที่เช่า (Room Key)</td>
+            <td class="border border-black p-1 text-center">{{key_room_qty}}</td>
+            <td class="border border-black p-1">{{key_room_note}}</td>
+        </tr>
+        <tr>
+            <td class="border border-black p-1">คีย์การ์ด (Key Card)</td>
+            <td class="border border-black p-1 text-center">{{key_card_qty}}</td>
+            <td class="border border-black p-1">{{key_card_note}}</td>
+        </tr>
+        <tr>
+            <td class="border border-black p-1">กุญแจห้องนอน (Bed room Key)</td>
+            <td class="border border-black p-1 text-center">{{key_bedroom_qty}}</td>
+            <td class="border border-black p-1">{{key_bedroom_note}}</td>
+        </tr>
+        <tr>
+            <td class="border border-black p-1">กุญแจห้องครัว (Kitchen Room Key)</td>
+            <td class="border border-black p-1 text-center">{{key_kitchen_qty}}</td>
+            <td class="border border-black p-1">{{key_kitchen_note}}</td>
+        </tr>
+        <tr>
+            <td class="border border-black p-1">กุญแจตู้จดหมาย (Mailbox Key)</td>
+            <td class="border border-black p-1 text-center">{{key_mailbox_qty}}</td>
+            <td class="border border-black p-1">{{key_mailbox_note}}</td>
+        </tr>
+        <tr>
+            <td class="border border-black p-1">สติ๊กเกอร์รถ (Sticker for Car)</td>
+            <td class="border border-black p-1 text-center">{{key_sticker_qty}}</td>
+            <td class="border border-black p-1">{{key_sticker_note}}</td>
+        </tr>
+        <tr>
+            <td class="border border-black p-1">เครื่องผ่านเข้าออกที่จอดรถ (E pass for Car)</td>
+            <td class="border border-black p-1 text-center">{{key_epass_qty}}</td>
+            <td class="border border-black p-1">{{key_epass_note}}</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <h2 class="font-bold text-center mb-4" style="font-size: 16pt;">เฟอร์นิเจอร์/ Furniture</h2>
+    <table class="w-full border-collapse border border-black text-sm">
+        <thead>
+            <tr class="bg-gray-200">
+                <th class="border border-black p-2 w-1/2">List</th>
+                <th class="border border-black p-2 w-1/6">Quantity</th>
+                <th class="border border-black p-2">Note</th>
+            </tr>
+        </thead>
+        <tbody>
+            
+        <tr>
+            <td class="border border-black p-1">TV cabinet/ชั้นวางทีวี</td>
+            <td class="border border-black p-1 text-center">{{furn_tvcabinet_qty}}</td>
+            <td class="border border-black p-1">{{furn_tvcabinet_note}}</td>
+        </tr>
+        <tr>
+            <td class="border border-black p-1">Bed with mattress/เตียงพร้อมฟูก</td>
+            <td class="border border-black p-1 text-center">{{furn_bed_qty}}</td>
+            <td class="border border-black p-1">{{furn_bed_note}}</td>
+        </tr>
+        <tr>
+            <td class="border border-black p-1">Built-in cabinet/ตู้ชั้นวางสำเร็จ</td>
+            <td class="border border-black p-1 text-center">{{furn_builtin_qty}}</td>
+            <td class="border border-black p-1">{{furn_builtin_note}}</td>
+        </tr>
+        <tr>
+            <td class="border border-black p-1">Wardrobe/ตู้เสื้อผ้า</td>
+            <td class="border border-black p-1 text-center">{{furn_wardrobe_qty}}</td>
+            <td class="border border-black p-1">{{furn_wardrobe_note}}</td>
+        </tr>
+        <tr>
+            <td class="border border-black p-1">Bedside table /โต๊ะข้างเตียง</td>
+            <td class="border border-black p-1 text-center">{{furn_bedside_qty}}</td>
+            <td class="border border-black p-1">{{furn_bedside_note}}</td>
+        </tr>
+        <tr>
+            <td class="border border-black p-1">Shower room divider /ฉากกั้นห้องอาบน้ำ</td>
+            <td class="border border-black p-1 text-center">{{furn_shower_qty}}</td>
+            <td class="border border-black p-1">{{furn_shower_note}}</td>
+        </tr>
+        <tr>
+            <td class="border border-black p-1">Toilet + Toilet sprayer/ชักโครก+สายฉีดชำระ</td>
+            <td class="border border-black p-1 text-center">{{furn_toilet_qty}}</td>
+            <td class="border border-black p-1">{{furn_toilet_note}}</td>
+        </tr>
+        <tr>
+            <td class="border border-black p-1">Bathtub/อ่างอาบน้ำ</td>
+            <td class="border border-black p-1 text-center">{{furn_bathtub_qty}}</td>
+            <td class="border border-black p-1">{{furn_bathtub_note}}</td>
+        </tr>
+        <tr>
+            <td class="border border-black p-1">Kitchen set with sink /ชุดครัว พร้อมซิงค์ล้างมือ</td>
+            <td class="border border-black p-1 text-center">{{furn_kitchen_qty}}</td>
+            <td class="border border-black p-1">{{furn_kitchen_note}}</td>
+        </tr>
+        <tr>
+            <td class="border border-black p-1">Sinks and faucets /อ่างล้างมือและก๊อกน้ำ</td>
+            <td class="border border-black p-1 text-center">{{furn_sink_qty}}</td>
+            <td class="border border-black p-1">{{furn_sink_note}}</td>
+        </tr>
+        <tr>
+            <td class="border border-black p-1">Carpet/พรม</td>
+            <td class="border border-black p-1 text-center">{{furn_carpet_qty}}</td>
+            <td class="border border-black p-1">{{furn_carpet_note}}</td>
+        </tr>
+        <tr>
+            <td class="border border-black p-1">Center table/โต๊ะกลางรับแขก</td>
+            <td class="border border-black p-1 text-center">{{furn_centertable_qty}}</td>
+            <td class="border border-black p-1">{{furn_centertable_note}}</td>
+        </tr>
+        <tr>
+            <td class="border border-black p-1">Shoes cabinet/ตู้ชั้นวางรองเท้า</td>
+            <td class="border border-black p-1 text-center">{{furn_shoescabinet_qty}}</td>
+            <td class="border border-black p-1">{{furn_shoescabinet_note}}</td>
+        </tr>
+        <tr>
+            <td class="border border-black p-1">Sofa/โซฟา</td>
+            <td class="border border-black p-1 text-center">{{furn_sofa_qty}}</td>
+            <td class="border border-black p-1">{{furn_sofa_note}}</td>
+        </tr>
+        <tr>
+            <td class="border border-black p-1">Bedding set /ชุดที่นอน</td>
+            <td class="border border-black p-1 text-center">{{furn_bedding_qty}}</td>
+            <td class="border border-black p-1">{{furn_bedding_note}}</td>
+        </tr>
+        <tr>
+            <td class="border border-black p-1">Dressing table set/ชุดโต๊ะเครื่องแป้ง</td>
+            <td class="border border-black p-1 text-center">{{furn_dressing_qty}}</td>
+            <td class="border border-black p-1">{{furn_dressing_note}}</td>
+        </tr>
+        <tr>
+            <td class="border border-black p-1">Dining table set with chair/ชุดโต๊ะทานอาหาร พร้อมเก้าอี้</td>
+            <td class="border border-black p-1 text-center">{{furn_dining_qty}}</td>
+            <td class="border border-black p-1">{{furn_dining_note}}</td>
+        </tr>
+        <tr>
+            <td class="border border-black p-1">Desk table with chair/โต๊ะทำงานพร้อมเก้าอี้</td>
+            <td class="border border-black p-1 text-center">{{furn_desk_qty}}</td>
+            <td class="border border-black p-1">{{furn_desk_note}}</td>
+        </tr>
+        <tr>
+            <td class="border border-black p-1">Curtain/ผ้าม่าน</td>
+            <td class="border border-black p-1 text-center">{{furn_curtain_qty}}</td>
+            <td class="border border-black p-1">{{furn_curtain_note}}</td>
+        </tr>
+        <tr>
+            <td class="border border-black p-1">Room laminate flooring /พื้นลามิเนต</td>
+            <td class="border border-black p-1 text-center">{{furn_flooring_qty}}</td>
+            <td class="border border-black p-1">{{furn_flooring_note}}</td>
+        </tr>
+        <tr>
+            <td class="border border-black p-1">Bamboo blind /มู่ลี่</td>
+            <td class="border border-black p-1 text-center">{{furn_blind_qty}}</td>
+            <td class="border border-black p-1">{{furn_blind_note}}</td>
+        </tr>
+        <tr>
+            <td class="border border-black p-1">Picture frame /กรอบรูป</td>
+            <td class="border border-black p-1 text-center">{{furn_frame_qty}}</td>
+            <td class="border border-black p-1">{{furn_frame_note}}</td>
+        </tr>
+        <tr>
+            <td class="border border-black p-1">Crockery Set ( photos)/ชุดถ้วยจาน ช้อนส้อม (ภาพถ่าย)</td>
+            <td class="border border-black p-1 text-center">{{furn_crockery_qty}}</td>
+            <td class="border border-black p-1">{{furn_crockery_note}}</td>
+        </tr>
+        <tr>
+            <td class="border border-black p-1">Clothes drying rack outside the balcony /ราวตากผ้านอกระเบียง</td>
+            <td class="border border-black p-1 text-center">{{furn_rack_qty}}</td>
+            <td class="border border-black p-1">{{furn_rack_note}}</td>
+        </tr>
+        </tbody>
+    </table>
+  </div>
