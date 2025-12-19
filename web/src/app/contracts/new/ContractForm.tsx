@@ -272,7 +272,8 @@ export function ContractForm({ templates }: { templates: any[] }) {
                             ))}
                         </select>
                     </div>
-                    <div>
+
+                    <div className="hidden">
                         <label className="block text-sm font-medium text-gray-700 mb-2">เลือกแบบฟอร์มสัญญา</label>
                         <select
                             value={selectedTemplateId}
@@ -286,6 +287,7 @@ export function ContractForm({ templates }: { templates: any[] }) {
                             ))}
                         </select>
                     </div>
+
                 </div>
                 {formData && formData.sections.map((section: any) => {
                     // Logic to hide/show extra lessee sections

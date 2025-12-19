@@ -52,7 +52,7 @@ export const CONTRACT_TYPES: Record<string, ContractTypeDefinition> = {
     },
     AGENCY: {
         id: 'AGENCY',
-        label: 'สัญญาแต่งตั้งนายหน้า (Agency Agreement)',
+        label: 'สัญญาแต่งตั้งนายหน้า (Broker Appointment Agreement)',
         shortLabel: 'นายหน้า',
         keywords: ['นายหน้า', 'Agency', 'Broker', 'แต่งตั้ง'],
         excludeKeywords: [],
