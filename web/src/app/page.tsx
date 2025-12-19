@@ -7,6 +7,8 @@ import { FileText, Eye, Download, Link as LinkIcon } from 'lucide-react';
 import { ContractListControls } from '@/components/ContractListControls';
 import { DeleteContractButton } from '@/components/DeleteContractButton';
 
+import { getContractType } from '@/lib/contract-types';
+
 export const dynamic = 'force-dynamic';
 
 export default async function Home({ searchParams }: { searchParams: Promise<{ [key: string]: string | string[] | undefined }> }) {
@@ -24,6 +26,17 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ [
     orderBy: { createdAt: sort === 'asc' ? 'asc' : 'desc' },
     include: { template: true }
   });
+
+  // Helper for badge color
+  const getBadgeColor = (typeId: string) => {
+    switch (typeId) {
+      case 'BUY': return 'bg-orange-100 text-orange-800';
+      case 'RECEIPT': return 'bg-purple-100 text-purple-800';
+      case 'AGENCY': return 'bg-teal-100 text-teal-800';
+      case 'RESERVATION': return 'bg-pink-100 text-pink-800';
+      default: return 'bg-blue-50 text-blue-700';
+    }
+  };
 
   return (
     <div className="flex min-h-screen bg-gray-50">
@@ -85,15 +98,16 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ [
                       console.error('Error parsing contract data', e);
                     }
 
+                    const typeDef = getContractType(contract.type || 'LEASE');
+
                     return (
                       <tr key={contract.id} className="hover:bg-gray-50 transition-colors">
                         <td className="px-6 py-4 font-medium text-gray-900">
                           {contract.identifier}
                         </td>
                         <td className="px-6 py-4 text-gray-600">
-                          <span className={`px-2 py-1 rounded text-xs font-medium ${contract.type === 'BUY' ? 'bg-orange-100 text-orange-800' : 'bg-blue-50 text-blue-700'
-                            }`}>
-                            {contract.type === 'BUY' ? 'ซื้อขาย' : 'เช่า'}
+                          <span className={`px-2 py-1 rounded text-xs font-medium ${getBadgeColor(contract.type || 'LEASE')}`}>
+                            {typeDef.shortLabel}
                           </span>
                         </td>
                         <td className="px-6 py-4 text-gray-600">
@@ -150,6 +164,8 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ [
                 console.error('Error parsing contract data', e);
               }
 
+              const typeDef = getContractType(contract.type || 'LEASE');
+
               return (
                 <div key={contract.id} className="bg-white rounded-xl shadow-sm border p-4">
                   <div className="flex justify-between items-start mb-3">
@@ -157,9 +173,8 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ [
                       <h3 className="font-bold text-gray-900 text-lg">{contract.identifier}</h3>
                       <p className="text-sm text-gray-500">{format(contract.createdAt, 'dd MMM yyyy HH:mm', { locale: th })}</p>
                     </div>
-                    <span className={`px-2 py-1 rounded text-xs font-medium ${contract.type === 'BUY' ? 'bg-orange-100 text-orange-800' : 'bg-blue-50 text-blue-700'
-                      }`}>
-                      {contract.type === 'BUY' ? 'ซื้อขาย' : 'เช่า'}
+                    <span className={`px-2 py-1 rounded text-xs font-medium ${getBadgeColor(contract.type || 'LEASE')}`}>
+                      {typeDef.shortLabel}
                     </span>
                   </div>
 

@@ -55,11 +55,18 @@ function SignatureInput({ label, value, onChange }: { label: string, value: stri
     );
 }
 
+// ... imports ...
+
+import { getContractType } from '../../../lib/contract-types';
+
 export function ContractDetail({ contract }: { contract: any }) {
     const router = useRouter();
     const [data, setData] = useState(JSON.parse(contract.data));
     const [isEditing, setIsEditing] = useState(false);
     const [loading, setLoading] = useState(false);
+
+    const contractDef = getContractType(contract.type || 'LEASE');
+    const isReceipt = contractDef.isReceipt;
 
     // Signature States
     const [lessorSig, setLessorSig] = useState(contract.lessorSignature || '');
@@ -72,21 +79,14 @@ export function ContractDetail({ contract }: { contract: any }) {
     };
 
     const handleCopyLink = async (role: 'lessor' | 'lessee') => {
+        // ... (existing logic) ...
         // Generate tokens if not exists
         if (!contract.lessorToken || !contract.lesseeToken) {
             // Call API to generate token
             const res = await fetch(`/api/contracts/${contract.id}/token`, { method: 'POST' });
-
             if (!res.ok) {
-                try {
-                    const err = await res.json();
-                    alert(`เกิดข้อผิดพลาด: ${err.error || 'ไม่สามารถสร้างลิงก์ได้'}`);
-                } catch (e) {
-                    alert('เกิดข้อผิดพลาดในการเชื่อมต่อกับเซิร์ฟเวอร์ กรุณาลองใหม่อีกครั้ง');
-                }
-                return;
+                alert('เกิดข้อผิดพลาดในการสร้างลิงก์'); return;
             }
-
             const updated = await res.json();
             contract.lessorToken = updated.lessorToken;
             contract.lesseeToken = updated.lesseeToken;
@@ -96,7 +96,10 @@ export function ContractDetail({ contract }: { contract: any }) {
         const token = role === 'lessor' ? contract.lessorToken : contract.lesseeToken;
         const url = `${window.location.origin}/sign/${contract.id}/${token}`;
         navigator.clipboard.writeText(url);
-        alert(`คัดลอกลิงก์สำหรับ${role === 'lessor' ? 'ผู้ให้เช่า' : 'ผู้เช่า'}แล้ว`);
+
+        const label = role === 'lessor' ? contractDef.roles.lessor.label : contractDef.roles.lessee.label;
+
+        alert(`คัดลอกลิงก์สำหรับ${label}แล้ว`);
     };
 
     const handleSave = async () => {
@@ -119,7 +122,7 @@ export function ContractDetail({ contract }: { contract: any }) {
                 }),
             });
 
-            // Update local state to reflect changes immediately if needed
+            // Update local state to reflect changes immediately
             setData(updatedData);
             contract.lessorSignature = lessorSig;
             contract.lesseeSignature = lesseeSig;
@@ -127,7 +130,7 @@ export function ContractDetail({ contract }: { contract: any }) {
             setIsEditing(false);
             router.refresh();
         } catch (e) {
-            alert('Error saving');
+            alert('เกิดข้อผิดพลาดในการบันทึก');
         } finally {
             setLoading(false);
         }
@@ -141,12 +144,20 @@ export function ContractDetail({ contract }: { contract: any }) {
                 flat[field.id] = field.value || '';
             });
         });
+
         // Add meta fields
         flat['signature'] = contract.signature || '';
+
+        // Standard Lease Maps
         flat['lessorSignature'] = lessorSig || contract.lessorSignature || '';
         flat['lesseeSignature'] = lesseeSig || contract.lesseeSignature || '';
         flat['witness1Signature'] = witness1Sig || data.witness1Signature || '';
         flat['witness2Signature'] = witness2Sig || data.witness2Signature || '';
+
+        // Receipt Maps (Reuse Lessor/Lessee slots)
+        flat['collectorSignature'] = lessorSig || contract.lessorSignature || '';
+        flat['payerSignature'] = lesseeSig || contract.lesseeSignature || '';
+
         return flat;
     }, [data, contract.signature, contract.lessorSignature, contract.lesseeSignature, lessorSig, lesseeSig, witness1Sig, witness2Sig]);
 
@@ -156,34 +167,34 @@ export function ContractDetail({ contract }: { contract: any }) {
 
         let html = data.layout;
 
-        // --- PATCH LOGIC FOR DUAL SIGNING ---
-        // 1. Add Lessor Signature if missing (Standard Template)
-        if (!html.includes('{{lessorSignature}}') && html.includes('ลงชื่อ ผู้ให้เช่า')) {
-            html = html.replace(
-                '<div class="border-b border-black w-3/4 mx-auto mb-2 h-16 flex items-end justify-center"></div>',
-                '<div class="border-b border-black w-3/4 mx-auto mb-2 h-16 flex items-end justify-center relative"><img src="{{lessorSignature}}" class="h-14 absolute bottom-0" style="display: {{lessorSignature ? \'block\' : \'none\'}}" /></div>'
-            );
-        }
+        // --- PATCH LOGIC FOR DUAL SIGNING (Only for Lease/Buy) ---
+        if (!isReceipt) {
+            // 1. Add Lessor Signature if missing (Standard Template)
+            if (!html.includes('{{lessorSignature}}') && html.includes('ลงชื่อ ผู้ให้เช่า')) {
+                html = html.replace(
+                    '<div class="border-b border-black w-3/4 mx-auto mb-2 h-16 flex items-end justify-center"></div>',
+                    '<div class="border-b border-black w-3/4 mx-auto mb-2 h-16 flex items-end justify-center relative"><img src="{{lessorSignature}}" class="h-14 absolute bottom-0" style="display: {{lessorSignature ? \'block\' : \'none\'}}" /></div>'
+                );
+            }
 
-        // 2. Update Lessee Signature (legacy {{signature}} to {{lesseeSignature}})
-        if (html.includes('{{signature}}')) {
-            html = html.replace(/{{signature}}/g, '{{lesseeSignature}}');
-        }
+            // 2. Update Lessee Signature (legacy {{signature}} to {{lesseeSignature}})
+            if (html.includes('{{signature}}')) {
+                html = html.replace(/{{signature}}/g, '{{lesseeSignature}}');
+            }
 
-        // 3. Patch Witness Signatures
-        // Replace first witness placeholder
-        if (flattenedData['witness1Signature']) {
-            html = html.replace(
-                '<div class="border-b border-gray-300 w-3/4 mx-auto mb-2 h-12"></div>',
-                `<div class="border-b border-gray-300 w-3/4 mx-auto mb-2 h-12 flex items-end justify-center relative"><img src="{{witness1Signature}}" class="h-12 absolute bottom-0" /></div>`
-            );
-        }
-        // Replace second witness placeholder (if first was replaced, this matches the next one)
-        if (flattenedData['witness2Signature']) {
-            html = html.replace(
-                '<div class="border-b border-gray-300 w-3/4 mx-auto mb-2 h-12"></div>',
-                `<div class="border-b border-gray-300 w-3/4 mx-auto mb-2 h-12 flex items-end justify-center relative"><img src="{{witness2Signature}}" class="h-12 absolute bottom-0" /></div>`
-            );
+            // 3. Patch Witness Signatures
+            if (flattenedData['witness1Signature']) {
+                html = html.replace(
+                    '<div class="border-b border-gray-300 w-3/4 mx-auto mb-2 h-12"></div>',
+                    `<div class="border-b border-gray-300 w-3/4 mx-auto mb-2 h-12 flex items-end justify-center relative"><img src="{{witness1Signature}}" class="h-12 absolute bottom-0" /></div>`
+                );
+            }
+            if (flattenedData['witness2Signature']) {
+                html = html.replace(
+                    '<div class="border-b border-gray-300 w-3/4 mx-auto mb-2 h-12"></div>',
+                    `<div class="border-b border-gray-300 w-3/4 mx-auto mb-2 h-12 flex items-end justify-center relative"><img src="{{witness2Signature}}" class="h-12 absolute bottom-0" /></div>`
+                );
+            }
         }
         // ------------------------------------
 
@@ -229,6 +240,9 @@ export function ContractDetail({ contract }: { contract: any }) {
         html = html.replace('{{sec_appliances_table}}', generateInventoryTable('sec_appliances'));
         html = html.replace('{{sec_furniture_table}}', generateInventoryTable('sec_furniture'));
 
+        // Inject :src modifier for image sources to avoid span replacement
+        html = html.replace(/src="{{([^}]+)}}"/g, 'src="{{$1:src}}"');
+
         // Replace {{expression}} with value
         html = html.replace(/{{(.*?)}}/g, (match: string, expression: string) => {
             const content = expression.trim();
@@ -236,16 +250,30 @@ export function ContractDetail({ contract }: { contract: any }) {
             // Check for modifiers (key:modifier)
             const [key, modifier] = content.split(':').map(s => s.trim());
 
+            // 0. Handle 'src' modifier (keep empty if empty, no span)
+            if (modifier === 'src') {
+                return flattenedData[key] || '';
+            }
+
             // 1. Direct key lookup with modifier
-            if (flattenedData[key] !== undefined) {
+            if (flattenedData[key]) {
                 const val = flattenedData[key];
                 if (modifier === 'thai') return toThaiBaht(val);
                 if (modifier === 'english') return toEnglishBaht(val);
+                if (modifier === 'thaidate') {
+                    const date = new Date(val);
+                    if (!isNaN(date.getTime())) {
+                        return date.toLocaleDateString('th-TH', {
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric',
+                        });
+                    }
+                }
                 return val;
             }
 
-            // 2. Simple Ternary: key ? 'val1' : 'val2'
-            // Supports: variable ? 'block' : 'none'
+            // 2. Simple Ternary
             const ternaryMatch = content.match(/^(\w+)\s*\?\s*'([^']*)'\s*:\s*'([^']*)'$/);
             if (ternaryMatch) {
                 const [_, varName, trueVal, falseVal] = ternaryMatch;
@@ -253,10 +281,16 @@ export function ContractDetail({ contract }: { contract: any }) {
                 return val ? trueVal : falseVal;
             }
 
-            return '';
+            // 3. Special handling for signatures
+            if (key.includes('Signature')) {
+                return '<span style="display: inline-block; width: 100%; height: 30px;"></span>';
+            }
+
+            // Default invisible space
+            return '<span style="display: inline-block; min-width: 150px;">&nbsp;</span>';
         });
 
-        return <div dangerouslySetInnerHTML={{ __html: html }} className="print:p-0" />;
+        return <div dangerouslySetInnerHTML={{ __html: html }} className="print:p-0 text-black" />;
     };
 
     return (
@@ -280,21 +314,19 @@ export function ContractDetail({ contract }: { contract: any }) {
                     </button>
                     <div className="flex flex-col md:flex-row gap-2">
                         <button onClick={() => handleCopyLink('lessee')} className="flex-1 md:flex-none justify-center flex items-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 text-sm">
-                            <LinkIcon size={16} /> ลิงก์ผู้เช่า
+                            <LinkIcon size={16} /> ลิงก์สำหรับ{contractDef.roles.lessee.label}
                         </button>
                         <button onClick={() => handleCopyLink('lessor')} className="flex-1 md:flex-none justify-center flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 text-sm">
-                            <LinkIcon size={16} /> ลิงก์ผู้ให้เช่า
+                            <LinkIcon size={16} /> ลิงก์สำหรับ{contractDef.roles.lessor.label}
                         </button>
                     </div>
                 </div>
             </div>
 
             <div className="bg-white p-4 md:p-8 shadow-sm border print:shadow-none print:border-none print:p-0 min-h-[297mm] overflow-x-auto">
-                {/* If not editing and layout exists, show the custom layout */}
                 {!isEditing && data.layout ? (
                     renderLayout()
                 ) : (
-                    /* Default Form View / Edit Mode */
                     <>
                         <div className="text-center mb-8">
                             <h1 className="text-2xl font-bold mb-2">{data.title}</h1>
@@ -302,10 +334,10 @@ export function ContractDetail({ contract }: { contract: any }) {
 
                             <div className="flex justify-center gap-4 print:hidden">
                                 <div className={`px-3 py-1 rounded-full text-xs font-medium border ${contract.lesseeSignature ? 'bg-green-50 text-green-700 border-green-200' : 'bg-yellow-50 text-yellow-700 border-yellow-200'}`}>
-                                    ผู้เช่า: {contract.lesseeSignature ? 'ลงนามแล้ว' : 'รอลงนาม'}
+                                    {contractDef.roles.lessee.label}: {contract.lesseeSignature ? 'ลงนามแล้ว' : 'รอลงนาม'}
                                 </div>
                                 <div className={`px-3 py-1 rounded-full text-xs font-medium border ${contract.lessorSignature ? 'bg-green-50 text-green-700 border-green-200' : 'bg-yellow-50 text-yellow-700 border-yellow-200'}`}>
-                                    ผู้ให้เช่า: {contract.lessorSignature ? 'ลงนามแล้ว' : 'รอลงนาม'}
+                                    {contractDef.roles.lessor.label}: {contract.lessorSignature ? 'ลงนามแล้ว' : 'รอลงนาม'}
                                 </div>
                             </div>
                         </div>
@@ -318,9 +350,10 @@ export function ContractDetail({ contract }: { contract: any }) {
                                         {section.fields.map((field: any) => (
                                             <div key={field.id} className={`${field.type === 'textarea' ? 'col-span-12' : 'col-span-6'} mb-2`}>
                                                 <label className="block text-xs font-semibold text-gray-500 mb-1">
-                                                    {field.label} <span className="text-gray-300 font-normal">({field.id})</span>
+                                                    {field.label}
                                                 </label>
                                                 {isEditing ? (
+                                                    // ... (Input rendering same as before)
                                                     field.type === 'textarea' ? (
                                                         <textarea
                                                             value={field.value || ''}
@@ -357,22 +390,14 @@ export function ContractDetail({ contract }: { contract: any }) {
                                                             />
                                                             {field.value && (
                                                                 <div className="relative w-full h-48 bg-gray-100 rounded overflow-hidden border">
-                                                                    <img
-                                                                        src={field.value}
-                                                                        alt="Preview"
-                                                                        className="w-full h-full object-contain"
-                                                                    />
-                                                                    <button
-                                                                        type="button"
-                                                                        onClick={() => {
-                                                                            const newData = { ...data };
-                                                                            const s = newData.sections.find((sec: any) => sec.id === section.id);
-                                                                            const f = s.fields.find((fi: any) => fi.id === field.id);
-                                                                            f.value = '';
-                                                                            setData(newData);
-                                                                        }}
-                                                                        className="absolute top-2 right-2 bg-red-500 text-white p-1 rounded-full hover:bg-red-600 transition-colors"
-                                                                    >
+                                                                    <img src={field.value} alt="Preview" className="w-full h-full object-contain" />
+                                                                    <button type="button" onClick={() => {
+                                                                        const newData = { ...data };
+                                                                        const s = newData.sections.find((sec: any) => sec.id === section.id);
+                                                                        const f = s.fields.find((fi: any) => fi.id === field.id);
+                                                                        f.value = '';
+                                                                        setData(newData);
+                                                                    }} className="absolute top-2 right-2 bg-red-500 text-white p-1 rounded-full hover:bg-red-600">
                                                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
                                                                     </button>
                                                                 </div>
@@ -410,47 +435,40 @@ export function ContractDetail({ contract }: { contract: any }) {
                             {/* Signatures Section in Edit Mode */}
                             {isEditing && (
                                 <div className="mb-6 border-t pt-6">
-                                    <h3 className="font-bold text-lg mb-4 bg-blue-50 p-2 rounded text-blue-800">ลงนามสัญญา (Signatures)</h3>
+                                    <h3 className="font-bold text-lg mb-4 bg-blue-50 p-2 rounded text-blue-800">ลงนาม (Signatures)</h3>
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                        <SignatureInput
-                                            label="ผู้ให้เช่า (Lessor)"
-                                            value={lessorSig}
-                                            onChange={setLessorSig}
-                                        />
-                                        <SignatureInput
-                                            label="ผู้เช่า (Lessee)"
-                                            value={lesseeSig}
-                                            onChange={setLesseeSig}
-                                        />
-                                        <SignatureInput
-                                            label="พยาน 1 (Witness 1)"
-                                            value={witness1Sig}
-                                            onChange={setWitness1Sig}
-                                        />
-                                        <SignatureInput
-                                            label="พยาน 2 (Witness 2)"
-                                            value={witness2Sig}
-                                            onChange={setWitness2Sig}
-                                        />
+
+                                        <>
+                                            <SignatureInput label={contractDef.roles.lessor.label} value={lessorSig} onChange={setLessorSig} />
+                                            <SignatureInput label={contractDef.roles.lessee.label} value={lesseeSig} onChange={setLesseeSig} />
+                                            {/* Only show witnesses if NOT receipt. Or better, allow config to specify witnesses? */}
+                                            {!isReceipt && (
+                                                <>
+                                                    <SignatureInput label="พยาน 1 (Witness 1)" value={witness1Sig} onChange={setWitness1Sig} />
+                                                    <SignatureInput label="พยาน 2 (Witness 2)" value={witness2Sig} onChange={setWitness2Sig} />
+                                                </>
+                                            )}
+                                        </>
+
                                     </div>
                                 </div>
                             )}
                         </div>
 
-                        {/* Default Signature Area (only show if not using custom layout AND not editing) */}
+                        {/* Default Signature Area */}
                         {!isEditing && (
                             <div className="mt-12 grid grid-cols-2 gap-8 print:mt-24 border-t pt-8">
                                 <div className="text-center">
                                     <div className="border-b border-black w-3/4 mx-auto mb-2 h-16 flex items-end justify-center relative">
                                         {contract.lessorSignature && <img src={contract.lessorSignature} className="h-14 absolute bottom-0" />}
                                     </div>
-                                    <p>ลงชื่อ ผู้ให้เช่า</p>
+                                    <p>ลงชื่อ {contractDef.roles.lessor.label}</p>
                                 </div>
                                 <div className="text-center">
                                     <div className="border-b border-black w-3/4 mx-auto mb-2 h-16 flex items-end justify-center relative">
                                         {contract.lesseeSignature && <img src={contract.lesseeSignature} className="h-14 absolute bottom-0" />}
                                     </div>
-                                    <p>ลงชื่อ ผู้เช่า</p>
+                                    <p>ลงชื่อ {contractDef.roles.lessee.label}</p>
                                 </div>
                             </div>
                         )}

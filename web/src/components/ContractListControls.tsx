@@ -2,6 +2,8 @@
 
 import { useRouter, useSearchParams } from 'next/navigation';
 
+import { CONTRACT_TYPE_OPTIONS } from '../lib/contract-types';
+
 export function ContractListControls() {
     const router = useRouter();
     const searchParams = useSearchParams();
@@ -30,8 +32,9 @@ export function ContractListControls() {
                 className="bg-white border border-gray-300 text-gray-700 py-2 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
                 <option value="ALL">ทั้งหมด (All Types)</option>
-                <option value="LEASE">สัญญาเช่า (Lease)</option>
-                <option value="BUY">สัญญาจะซื้อจะขาย (Buy/Sell)</option>
+                {CONTRACT_TYPE_OPTIONS.map(opt => (
+                    <option key={opt.id} value={opt.id}>{opt.label}</option>
+                ))}
             </select>
 
             <select

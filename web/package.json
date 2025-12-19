@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "postinstall": "prisma generate"
+    "postinstall": "prisma generate",
+    "setup-agency": "ts-node -O \"{\\\"module\\\":\\\"commonjs\\\"}\" scripts/setup-agency-template.ts",
+    "setup-templates": "tsx scripts/setup-all-templates.ts"
   },
   "dependencies": {
     "@prisma/client": "^6.19.0",
@@ -34,6 +36,7 @@
     "prisma": "^6.19.0",
     "tailwindcss": "^4",
     "ts-node": "^10.9.2",
+    "tsx": "^4.21.0",
     "typescript": "^5"
   }
 }
