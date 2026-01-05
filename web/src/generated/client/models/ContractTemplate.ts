@@ -1129,6 +1129,7 @@ export type ContractTemplateCreateManyArgs<ExtArgs extends runtime.Types.Extensi
    * The data used to create many ContractTemplates.
    */
   data: Prisma.ContractTemplateCreateManyInput | Prisma.ContractTemplateCreateManyInput[]
+  skipDuplicates?: boolean
 }
 
 /**
@@ -1147,6 +1148,7 @@ export type ContractTemplateCreateManyAndReturnArgs<ExtArgs extends runtime.Type
    * The data used to create many ContractTemplates.
    */
   data: Prisma.ContractTemplateCreateManyInput | Prisma.ContractTemplateCreateManyInput[]
+  skipDuplicates?: boolean
 }
 
 /**

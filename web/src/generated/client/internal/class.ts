@@ -46,18 +46,17 @@ const config: runtime.GetPrismaClientConfig = {
   "datasourceNames": [
     "db"
   ],
-  "activeProvider": "sqlite",
-  "postinstall": false,
+  "activeProvider": "postgresql",
   "inlineDatasources": {
     "db": {
       "url": {
-        "fromEnvVar": "DATABASE_URL",
+        "fromEnvVar": "POSTGRES_PRISMA_URL",
         "value": null
       }
     }
   },
-  "inlineSchema": "generator client {\n  provider = \"prisma-client\"\n  output   = \"../src/generated/client\"\n}\n\ndatasource db {\n  provider = \"sqlite\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel ContractTemplate {\n  id        String     @id @default(cuid())\n  name      String\n  content   String // JSON string representing the form structure\n  createdAt DateTime   @default(now())\n  updatedAt DateTime   @updatedAt\n  contracts Contract[]\n}\n\nmodel Contract {\n  id         String           @id @default(cuid())\n  identifier String // Room - Condo\n  templateId String\n  template   ContractTemplate @relation(fields: [templateId], references: [id])\n  data       String // JSON string of filled data\n  type       String           @default(\"LEASE\") // LEASE, BUY\n  status     String           @default(\"DRAFT\") // DRAFT, SENT, SIGNED\n  token      String?          @unique // For signing link (Deprecated)\n  signature  String? // Base64 or path (Deprecated)\n  signedAt   DateTime?\n\n  // New Signing Workflow\n  lessorToken     String?   @unique\n  lesseeToken     String?   @unique\n  lessorSignature String?\n  lesseeSignature String?\n  lessorSignedAt  DateTime?\n  lesseeSignedAt  DateTime?\n\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n}\n",
-  "inlineSchemaHash": "bb7d88c4732de0e102278e5b96e17a9accf777e8436c7dbd2e3422217e475c52",
+  "inlineSchema": "generator client {\n  provider = \"prisma-client\"\n  output   = \"../src/generated/client\"\n}\n\ndatasource db {\n  provider  = \"postgresql\"\n  url       = env(\"POSTGRES_PRISMA_URL\") // uses connection pooling\n  directUrl = env(\"POSTGRES_URL_NON_POOLING\") // uses a direct connection\n}\n\nmodel ContractTemplate {\n  id        String     @id @default(cuid())\n  name      String\n  content   String // JSON string representing the form structure\n  createdAt DateTime   @default(now())\n  updatedAt DateTime   @updatedAt\n  contracts Contract[]\n}\n\nmodel Contract {\n  id         String           @id @default(cuid())\n  identifier String // Room - Condo\n  templateId String\n  template   ContractTemplate @relation(fields: [templateId], references: [id])\n  data       String // JSON string of filled data\n  type       String           @default(\"LEASE\") // LEASE, BUY\n  status     String           @default(\"DRAFT\") // DRAFT, SENT, SIGNED\n  token      String?          @unique // For signing link (Deprecated)\n  signature  String? // Base64 or path (Deprecated)\n  signedAt   DateTime?\n\n  // New Signing Workflow\n  lessorToken     String?   @unique\n  lesseeToken     String?   @unique\n  lessorSignature String?\n  lesseeSignature String?\n  lessorSignedAt  DateTime?\n  lesseeSignedAt  DateTime?\n\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n}\n",
+  "inlineSchemaHash": "556d4965d44c0227be98270a7f24cda7aaf73cbbceb8053856b57cc2d3355e1d",
   "copyEngine": true,
   "runtimeDataModel": {
     "models": {},
