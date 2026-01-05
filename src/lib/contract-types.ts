@@ -23,7 +23,7 @@ export const CONTRACT_TYPES: Record<string, ContractTypeDefinition> = {
         label: 'สัญญาเช่า (Lease Agreement)',
         shortLabel: 'เช่า',
         keywords: ['เช่า', 'Lease'],
-        excludeKeywords: ['Receipt', 'ซื้อ', 'Buy', 'ใบรับเงิน'],
+        excludeKeywords: ['Receipt', 'ซื้อ', 'Buy', 'ใบรับเงิน', 'นายหน้า', 'Agency', 'Broker', 'จอง', 'Reservation', 'Booking', 'แต่งตั้ง'],
         roles: {
             lessor: { label: 'ผู้ให้เช่า', enLabel: 'Lessor' },
             lessee: { label: 'ผู้เช่า', enLabel: 'Lessee' }
