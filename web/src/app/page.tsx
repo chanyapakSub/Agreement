@@ -83,7 +83,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ [
                     </td>
                   </tr>
                 ) : (
-                  contracts.map((contract) => {
+                  contracts.map((contract: any) => {
                     let tenantName = '-';
                     try {
                       const data = JSON.parse(contract.data);
@@ -149,7 +149,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ [
               ไม่พบสัญญาในระบบ
             </div>
           ) : (
-            contracts.map((contract) => {
+            contracts.map((contract: any) => {
               let tenantName = '-';
               try {
                 const data = JSON.parse(contract.data);

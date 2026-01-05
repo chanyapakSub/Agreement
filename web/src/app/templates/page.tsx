@@ -15,7 +15,7 @@ export default async function TemplatesPage() {
                     <h1 className="text-2xl md:text-3xl font-bold text-gray-900">แบบฟอร์ม / เทมเพลต</h1>
                 </div>
                 <div className="grid gap-4">
-                    {templates.map(t => (
+                    {templates.map((t: any) => (
                         <div key={t.id} className="bg-white p-6 rounded-xl shadow-sm border flex justify-between items-center">
                             <div>
                                 <h3 className="font-bold text-lg">{t.name}</h3>
