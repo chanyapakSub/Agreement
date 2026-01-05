@@ -1,0 +1,145 @@
+<div class="p-[20mm] md:p-[25mm] text-black font-[Cordia New] leading-relaxed relative" style="font-family: 'Cordia New', sans-serif; font-size: 15pt;">
+    
+    <!-- Header -->
+    <div class="flex justify-between items-start mb-4">
+        <div class="w-1/3">
+             <img src="/logo_PL_property.png" alt="PL Property" class="h-24 object-contain" />
+        </div> 
+        <div class="text-right w-2/3">
+            <div class="font-bold text-xl mb-2">สัญญาแต่งตั้งนายหน้า/ <span class="text-[12pt]">Broker Appointment Agreement</span></div>
+            <div class="mb-1">วันที่/<span class="text-[12pt]">Date</span> <span class="font-bold border-b border-dotted border-black px-2 min-w-[150px] inline-block text-center">{{contractDate}}</span></div>
+            <div>เขียนที่ / <span class="text-[12pt]">Written at</span> <span class="font-bold border-b border-dotted border-black px-2 min-w-[200px] inline-block text-center">{{location}}</span></div>
+        </div>
+    </div>
+
+    <div class="mb-4 text-justify">
+        สัญญาฉบับนี้ทําขึ้นระหว่าง/ <span class="text-[12pt]">This agreement is made between</span><br/>
+        ชื่อ/<span class="text-[12pt]">Name</span> <span class="font-bold border-b border-dotted border-black px-2">{{lessor}}</span>
+        <span class="text-[12pt]">ID Card or Passport no</span> <span class="font-bold border-b border-dotted border-black px-2">{{lessorId}}</span><br/>
+        ที่อยู่/<span class="text-[12pt]">Address</span> <span class="font-bold border-b border-dotted border-black px-2 w-full block md:inline md:w-auto">{{lessorAddress}}</span>
+        <span class="text-[12pt]">Tel</span> <span class="font-bold border-b border-dotted border-black px-2">{{lessorPhone}}</span><br/>
+        ซึ่งต่อไปนี้ในสัญญาเรียกว่าผู้ให้เช่า/ <span class="text-[12pt]">Here in after referred to as the "Lessor"</span>
+    </div>
+
+    <div class="mb-4 text-justify">
+        กับนางนัยนา เวียงพล เลขประจำตัวประชาชน 3700100535206 ที่อยู่เลขที่ 99/680 ม.ชลดาสุวรรณภูมิ ต.ศีรษะจรเข้น้อย อ.บางเสาธง จ.สมุทรปราการ ในสัญญานี้เรียกว่า “นายหน้า” โดยที่ คู่สัญญาทั้งสองฝ่าย ตกลงกันดังนี้<br/>
+        <span class="text-[12pt]">And Mrs. Naiyana Wiengpon, Identification No. 3700100535206, residing at 99/680 Chollada Suvarnabhumi Village, Sisa Chorakhe Noi Subdistrict, Bang Sao Thong District, Samut Prakan Province, Here in after referred to as the "Broker"</span>
+    </div>
+
+    <div class="space-y-4 text-justify">
+        <div>
+            1. ผู้ให้เช่าในฐานะผู้มีกรรมสิทธิ์ที่จะให้เช่าและประสงค์จะให้เช่าโครงการชื่อ <span class="font-bold border-b border-dotted border-black px-2">{{projectName}}</span><br/>
+            ที่อยู่ <span class="font-bold border-b border-dotted border-black px-2 w-full block md:inline md:w-auto">{{propertyLocation}}</span><br/>
+            ในสัญญาเรียกว่า “ทรัพย์สิน” โดยผู้ให้เช่าประสงค์จะให้เช่าทรัพย์สินดังกล่าวพร้อมอุปกรณ์ส่วนควบ และทรัพย์สินที่เกี่ยวข้องทั้งหมดในราคาอัตราค่าเช่าเดือนละ <span class="font-bold border-b border-dotted border-black px-2">{{monthlyRent}}</span> บาท (...................................)<br/>
+            มีกําหนดระยะเวลา <span class="font-bold border-b border-dotted border-black px-2">{{contractPeriod}}</span> เดือน โดยเริ่มต้นวันที่ <span class="font-bold border-b border-dotted border-black px-2">{{startDate}}</span> หมดอายุสัญญาวันที่ <span class="font-bold border-b border-dotted border-black px-2">{{endDate}}</span><br/>
+            <div class="text-[12pt] text-gray-700 italic mt-1">
+                The Lessor, as the rightful owner of the property and wishing to rent it out, hereby appoints the Broker to act on their behalf for the property named: <span class="border-b border-dotted border-black px-1">{{projectName}}</span> Located at <span class="border-b border-dotted border-black px-1">{{propertyLocation}}</span><br/>
+                Hereinafter referred to as the “Property”. The Lessor agrees to rent out the Property including all fixtures and relevant items at the monthly rental rate of <span class="border-b border-dotted border-black px-1">{{monthlyRent}}</span> Baht (........................................................) for a period of <span class="border-b border-dotted border-black px-1">{{contractPeriod}}</span> months, starting from <span class="border-b border-dotted border-black px-1">{{startDate}}</span> and ending on <span class="border-b border-dotted border-black px-1">{{endDate}}</span>
+            </div>
+        </div>
+
+        <div>
+            2. ผู้ให้เช่าแต่งตั้งให้นายหน้าเป็นผู้ติดต่อและจัดหาผู้จะเช่าเพื่อให้ผู้ให้เช่า ได้เข้าทําสัญญากับผู้จะเช่าจนเสร็จสิ้นและนายหน้าตกลงรับเป็นผู้ให้บริการจัดหาผู้จะเช่า โดยผู้ให้เช่าตกลงที่จะชําระค่าบริการให้แก่นายหน้าโดย (โปรดเลือก)<br/>
+            <div class="text-[12pt] text-gray-700 italic mt-1 mb-2">
+                The Lessor appoints the Broker to act as the liaison and to procure a prospective tenant, in order to facilitate and complete the lease agreement between the Lessor and the tenant. The Broker agrees to provide the tenant procurement service. The Lessor agrees to pay the Broker a service fee equivalent to (please choose)
+            </div>
+            
+            <div class="pl-4 space-y-2">
+                <div class="flex items-start">
+                    <span class="mr-2 text-lg transform translate-y-[-2px]">□</span>
+                    <div>
+                        ณ วันจอง เป็นเงินจํานวน 0.5 เดือนของค่าเช่า และ ณ วันทำสัญญา เป็นเงินจํานวน 0.5 เดือนของค่าเช่า<br/>
+                        <span class="text-[12pt] italic text-gray-600">0.5 month of the rental rate on the booking date, and an additional 0.5 month of the rental rate on the contract signing date.</span>
+                    </div>
+                </div>
+                <div class="flex items-start">
+                    <span class="mr-2 text-lg transform translate-y-[-2px]">□</span>
+                    <div>
+                        ณ วันทำสัญญา เป็นเงินจํานวน 1 เดือนของค่าเช่า<br/>
+                        <span class="text-[12pt] italic text-gray-600">1 month of the rental rate on the contract signing date.</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-4 p-4 border border-gray-300 bg-gray-50 rounded">
+                <div class="font-bold">เลขที่บัญชี / <span class="text-[12pt]">Account No.</span></div>
+                <div class="text-xl font-bold my-1">6222244559</div>
+                <div>SCB Siam Commercial Bank</div>
+                <div>Naiyana Wiengpon</div>
+            </div>
+        </div>
+
+        <div>
+            3. ในกรณีที่นายหน้า ได้จัดหาผู้จะเช่าในการเข้าทําสัญญาและรับเงินจองการเช่าจากผู้จะเช่าแทนผู้ให้เช่าไว้แล้วนั้น หากผู้ให้เช่าไม่สามารถส่งมอบทรัพย์สินกับผู้จองเช่าได้ ผู้ให้เช่าตกลงคืนเงินจอง และ/หรือเงินทําสัญญาที่ได้รับไปแล้วทั้งหมด พร้อมชําระค่าบริการให้กับนายหน้าในอัตรา 0.5 เดือนของค่าเช่า<br/>
+            <div class="text-[12pt] text-gray-700 italic mt-1">
+                In the event that the Broker has secured a prospective tenant and received a booking fee on behalf of the Lessor, and the Lessor fails to deliver the Property to the tenant, the Lessor agrees to fully refund all booking fees and/or contract payments already received, and also agrees to pay the Broker a service fee equal to 0.5 month of the rental rate.
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-6 mb-8 text-justify">
+        สัญญานี้ทำขึ้นเป็นสองฉบับมีข้อความถูกต้องตรงกันคู่สัญญาได้อ่านและเข้าใจข้อความในสัญญาโดยตลอดดีแล้ว จึงลงลายมือชื่อพร้อมทั้งประทับตรา (ถ้ามี) ไว้เป็นสำคัญต่อหน้าพยานและเก็บไว้ฝ่ายละหนึ่งฉบับ<br/>
+        <div class="text-[12pt] text-gray-700 italic mt-1">
+            This contract is made in two copies, with the correct message. Both parties have read and understood all the message in the contract. Therefore, signed and stamped (if any) in the presence of witnesses and kept one copy each.
+        </div>
+    </div>
+
+    <!-- Signatures -->
+    <div class="grid grid-cols-2 gap-8 break-inside-avoid">
+        <div class="text-center">
+            <div class="mb-4">ผู้ให้เช่า <span class="text-[12pt]">LESSOR</span></div>
+            <div class="h-16 flex items-end justify-center relative">
+                <img src="{{lessorSignature}}" class="h-14 absolute bottom-0 max-w-full" style="display: {{lessorSignature ? 'block' : 'none'}}" />
+            </div>
+            <div class="border-b border-dotted border-black mb-1 mx-4"></div>
+            <div><span class="text-[12pt]">Sign</span> (..........................................................)</div>
+            <div class="mt-2 text-left px-8"><span class="text-[12pt]">Name</span>: <span class="font-bold">{{lessor}}</span></div>
+        </div>
+        
+        <div class="text-center">
+            <div class="mb-4">นายหน้า <span class="text-[12pt]">BROKER</span></div>
+            <div class="h-16 flex items-end justify-center relative">
+                <img src="{{lesseeSignature}}" class="h-14 absolute bottom-0 max-w-full" style="display: {{lesseeSignature ? 'block' : 'none'}}" />
+            </div>
+            <div class="border-b border-dotted border-black mb-1 mx-4"></div>
+            <div><span class="text-[12pt]">Sign</span> (..........................................................)</div>
+            <div class="mt-2 text-left px-8"><span class="text-[12pt]">Name</span>: <span class="font-bold">Mrs.Naiyana Wiengpon</span></div>
+        </div>
+    </div>
+
+    <div class="mt-8 grid grid-cols-2 gap-8 break-inside-avoid">
+        <div class="text-center">
+            <div class="mb-4">พยาน 1 <span class="text-[12pt]">Witness 1</span></div>
+             <div class="h-16 flex items-end justify-center relative">
+                    <img src="{{witness1Signature}}" class="h-14 absolute bottom-0 max-w-full" style="display: {{witness1Signature ? 'block' : 'none'}}" />
+            </div>
+            <div class="border-b border-dotted border-black mb-1 mx-4"></div>
+            <div><span class="text-[12pt]">Sign</span> (..........................................................)</div>
+            <div class="mt-2 text-left px-8"><span class="text-[12pt]">Name</span>: {{witness1Name}}</div>
+        </div>
+        
+        <div class="text-center">
+            <div class="mb-4">พยาน 2 <span class="text-[12pt]">Witness 2</span></div>
+             <div class="h-16 flex items-end justify-center relative">
+                    <img src="{{witness2Signature}}" class="h-14 absolute bottom-0 max-w-full" style="display: {{witness2Signature ? 'block' : 'none'}}" />
+            </div>
+            <div class="border-b border-dotted border-black mb-1 mx-4"></div>
+            <div><span class="text-[12pt]">Sign</span> (..........................................................)</div>
+            <div class="mt-2 text-left px-8"><span class="text-[12pt]">Name</span>: {{witness2Name}}</div>
+        </div>
+    </div>
+
+    <!-- Attachments -->
+    <div class="mt-12 break-before-page">
+        <div class="mb-8">
+            <div class="font-bold mb-4"><span class="text-[12pt]">Lessor ID Card or Passport</span> / บัตรประชาชนหรือ passport ผู้ให้เช่า</div>
+            <img src="{{lessorIdImage}}" class="w-full max-w-md object-contain border" style="display: {{lessorIdImage ? 'block' : 'none'}}; max-height: 400px;" />
+        </div>
+        
+        <div>
+            <div class="font-bold mb-4"><span class="text-[12pt]">Broker ID Card or Passport</span> / บัตรประชาชนหรือ passport นายหน้า</div>
+            <img src="{{lesseeIdImage}}" class="w-full max-w-md object-contain border" style="display: {{lesseeIdImage ? 'block' : 'none'}}; max-height: 400px;" />
+        </div>
+    </div>
+
+</div>

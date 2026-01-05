@@ -2,9 +2,16 @@
 
 import { useState, useMemo, useRef, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { Printer, Link as LinkIcon, Edit, Save, Check, ArrowLeft } from 'lucide-react';
+import { Printer, Link as LinkIcon, Edit, Save, Check, ArrowLeft, RefreshCw } from 'lucide-react';
 import SignatureCanvas from 'react-signature-canvas';
 import { toThaiBaht, toEnglishBaht } from '../../../lib/text-utils';
+import {
+    DEFAULT_LEASE_LAYOUT,
+    DEFAULT_BUY_LAYOUT,
+    DEFAULT_RECEIPT_LAYOUT,
+    DEFAULT_AGENCY_LAYOUT,
+    DEFAULT_RESERVATION_LAYOUT
+} from '../../../lib/contract-defaults';
 
 function SignatureInput({ label, value, onChange }: { label: string, value: string, onChange: (val: string) => void }) {
     const sigRef = useRef<any>(null);
@@ -63,6 +70,7 @@ export function ContractDetail({ contract }: { contract: any }) {
     const router = useRouter();
     const [data, setData] = useState(JSON.parse(contract.data));
     const [isEditing, setIsEditing] = useState(false);
+    const [isEditingTerms, setIsEditingTerms] = useState(false);
     const [loading, setLoading] = useState(false);
 
     const contractDef = getContractType(contract.type || 'LEASE');
@@ -128,6 +136,7 @@ export function ContractDetail({ contract }: { contract: any }) {
             contract.lesseeSignature = lesseeSig;
 
             setIsEditing(false);
+            setIsEditingTerms(false);
             router.refresh();
         } catch (e) {
             alert('เกิดข้อผิดพลาดในการบันทึก');
@@ -166,6 +175,11 @@ export function ContractDetail({ contract }: { contract: any }) {
         if (!data.layout) return null;
 
         let html = data.layout;
+
+        // --- STANDARDIZATION LOGIC REMOVED ---
+        // We now rely on the 'data.layout' from the database (or custom edits) to be correct.
+        // This allows the "Edit Terms" feature to work without being overridden.
+        // -------------------------------------
 
         // --- PATCH LOGIC FOR DUAL SIGNING (Only for Lease/Buy) ---
         if (!isReceipt) {
@@ -290,7 +304,7 @@ export function ContractDetail({ contract }: { contract: any }) {
             return '<span style="display: inline-block; min-width: 150px;">&nbsp;</span>';
         });
 
-        return <div dangerouslySetInnerHTML={{ __html: html }} className="print:p-0 text-black" />;
+        return <div dangerouslySetInnerHTML={{ __html: html }} className="print:p-0 text-black text-[16pt]" />;
     };
 
     return (
@@ -300,14 +314,19 @@ export function ContractDetail({ contract }: { contract: any }) {
                     <ArrowLeft size={20} /> กลับ
                 </button>
                 <div className="flex flex-wrap gap-3 w-full md:w-auto">
-                    {isEditing ? (
+                    {isEditing || isEditingTerms ? (
                         <button onClick={handleSave} disabled={loading} className="flex-1 md:flex-none justify-center flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">
                             <Save size={18} /> บันทึก
                         </button>
                     ) : (
-                        <button onClick={() => setIsEditing(true)} className="flex-1 md:flex-none justify-center flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
-                            <Edit size={18} /> แก้ไขข้อมูล
-                        </button>
+                        <>
+                            <button onClick={() => setIsEditing(true)} className="flex-1 md:flex-none justify-center flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                                <Edit size={18} /> แก้ไขข้อมูล
+                            </button>
+                            <button onClick={() => setIsEditingTerms(true)} className="flex-1 md:flex-none justify-center flex items-center gap-2 px-4 py-2 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700">
+                                <Edit size={18} /> แก้ไขข้อสัญญา
+                            </button>
+                        </>
                     )}
                     <button onClick={handlePrint} className="flex-1 md:flex-none justify-center flex items-center gap-2 px-4 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-900">
                         <Printer size={18} /> พิมพ์ / PDF
@@ -323,8 +342,42 @@ export function ContractDetail({ contract }: { contract: any }) {
                 </div>
             </div>
 
-            <div className="bg-white p-4 md:p-8 shadow-sm border print:shadow-none print:border-none print:p-0 min-h-[297mm] overflow-x-auto">
-                {!isEditing && data.layout ? (
+            <div className="bg-white p-4 md:p-8 shadow-sm border print:shadow-none print:border-none print:p-0 min-h-[297mm] overflow-x-auto print:overflow-visible print:h-auto print:block">
+                {isEditingTerms ? (
+                    <div className="space-y-4">
+                        <div className="bg-yellow-50 p-4 border border-yellow-200 rounded text-yellow-800 text-sm">
+                            <div className="flex justify-between items-start mb-2">
+                                <p className="font-bold">⚠️ แก้ไขข้อสัญญา (Edit Terms)</p>
+                                <button
+                                    onClick={() => {
+                                        if (confirm('ยืนยันการรีเซ็ตรูปแบบเอกสารเป็นค่าเริ่มต้น? (การแก้ไข Layout ทั้งหมดจะหายไป)')) {
+                                            let newLayout = DEFAULT_LEASE_LAYOUT;
+                                            const type = contract.type;
+                                            if (type === 'BUY') newLayout = DEFAULT_BUY_LAYOUT;
+                                            else if (type === 'RECEIPT') newLayout = DEFAULT_RECEIPT_LAYOUT;
+                                            else if (type === 'AGENCY' || type === 'OPEN_AGENCY') newLayout = DEFAULT_AGENCY_LAYOUT;
+                                            else if (type === 'RESERVATION' || type === 'RESERVATION_AGREEMENT') newLayout = DEFAULT_RESERVATION_LAYOUT;
+
+                                            setData({ ...data, layout: newLayout });
+                                        }
+                                    }}
+                                    className="text-xs bg-white border border-yellow-300 px-2 py-1 rounded hover:bg-yellow-100 flex items-center gap-1"
+                                >
+                                    <RefreshCw size={12} /> รีเซ็ตรูปแบบ (Reset Layout)
+                                </button>
+                            </div>
+                            <p>แก้ไข HTML โดยตรง - ระวังอย่าลบตัวแปรในปีกกา <code>{`{{...}}`}</code></p>
+                            <p className="text-xs mt-1 text-red-600">ตัวอย่าง: <code>{`{{contractDate}}`}</code>, <code>{`{{lessor}}`}</code>, <code>{`{{lessee}}`}</code> - ระบบจะแทนที่ด้วยข้อมูลจริง</p>
+                        </div>
+                        <textarea
+                            value={data.layout || ''}
+                            onChange={(e) => setData({ ...data, layout: e.target.value })}
+                            className="w-full h-[600px] font-mono text-sm p-4 border rounded-lg bg-gray-50 text-gray-900 focus:ring-2 focus:ring-blue-500 outline-none"
+                            placeholder="<div>...</div>"
+                            spellCheck={false}
+                        />
+                    </div>
+                ) : !isEditing && data.layout ? (
                     renderLayout()
                 ) : (
                     <>

@@ -66,10 +66,43 @@ export const CONTRACT_TYPES: Record<string, ContractTypeDefinition> = {
         label: 'รายละเอียดการจองห้องเช่า (Rental Reservation)',
         shortLabel: 'ใบจอง',
         keywords: ['จอง', 'Reservation', 'Booking'],
-        excludeKeywords: [],
+        excludeKeywords: ['Agreement', 'สัญญา'],
         roles: {
             lessor: { label: 'ผู้ให้เช่า', enLabel: 'Lessor' },
             lessee: { label: 'ผู้จอง', enLabel: 'Tenant' }
+        }
+    },
+    RESERVATION_AGREEMENT: {
+        id: 'RESERVATION_AGREEMENT',
+        label: 'สัญญาจองคอนโดสำหรับเช่า (Rental Reservation Agreement)',
+        shortLabel: 'สัญญาจอง',
+        keywords: ['สัญญาจอง', 'Reservation Agreement'],
+        excludeKeywords: [],
+        roles: {
+            lessor: { label: 'ผู้ให้เช่า', enLabel: 'Lessor' },
+            lessee: { label: 'ผู้เช่า', enLabel: 'Lessee' }
+        }
+    },
+    OPEN_AGENCY: {
+        id: 'OPEN_AGENCY',
+        label: 'สัญญาแต่งตั้งนายหน้าแบบเปิด (Open Agency Agreement)',
+        shortLabel: 'นายหน้า(เปิด)',
+        keywords: ['นายหน้าแบบเปิด', 'Open Agency'],
+        excludeKeywords: [],
+        roles: {
+            lessor: { label: 'เจ้าของทรัพย์', enLabel: 'Owner' },
+            lessee: { label: 'นายหน้า', enLabel: 'Agent' }
+        }
+    },
+    CO_BROKER: {
+        id: 'CO_BROKER',
+        label: 'หนังสือสัญญาระหว่างนายหน้า (Co-Broker Agreement)',
+        shortLabel: 'Co-Broker',
+        keywords: ['ระหว่างนายหน้า', 'Co-Broker'],
+        excludeKeywords: [],
+        roles: {
+            lessor: { label: 'นายหน้าฝ่ายผู้ขาย', enLabel: 'Seller Agent' },
+            lessee: { label: 'นายหน้าฝ่ายผู้ซื้อ', enLabel: 'Buyer Agent' }
         }
     }
 };
