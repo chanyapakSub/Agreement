@@ -8,7 +8,7 @@ export async function GET() {
         orderBy: { createdAt: 'desc' },
     });
 
-    const rows = contracts.map(c => {
+    const rows = contracts.map((c: any) => {
         let data: any = {};
         try {
             data = JSON.parse(c.data);
