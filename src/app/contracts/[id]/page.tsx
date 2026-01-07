@@ -10,6 +10,7 @@ export default async function ContractPage({ params }: { params: Promise<{ id: s
 
     const contract = await prisma.contract.findUnique({
         where: { id },
+        include: { template: true },
     });
 
     if (!contract) notFound();

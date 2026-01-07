@@ -5,13 +5,7 @@ import { useRouter } from 'next/navigation';
 import { Printer, Link as LinkIcon, Edit, Save, Check, ArrowLeft, RefreshCw } from 'lucide-react';
 import SignatureCanvas from 'react-signature-canvas';
 import { toThaiBaht, toEnglishBaht } from '../../../lib/text-utils';
-import {
-    DEFAULT_LEASE_LAYOUT,
-    DEFAULT_BUY_LAYOUT,
-    DEFAULT_RECEIPT_LAYOUT,
-    DEFAULT_AGENCY_LAYOUT,
-    DEFAULT_RESERVATION_LAYOUT
-} from '../../../lib/contract-defaults';
+
 
 function SignatureInput({ label, value, onChange }: { label: string, value: string, onChange: (val: string) => void }) {
     const sigRef = useRef<any>(null);
@@ -79,8 +73,8 @@ export function ContractDetail({ contract }: { contract: any }) {
     // Signature States
     const [lessorSig, setLessorSig] = useState(contract.lessorSignature || '');
     const [lesseeSig, setLesseeSig] = useState(contract.lesseeSignature || '');
-    const [witness1Sig, setWitness1Sig] = useState(data.witness1Signature || '');
-    const [witness2Sig, setWitness2Sig] = useState(data.witness2Signature || '');
+    const [witness1Sig, setWitness1Sig] = useState(contract.witness1Signature || data.witness1Signature || '');
+    const [witness2Sig, setWitness2Sig] = useState(contract.witness2Signature || data.witness2Signature || '');
 
     const handlePrint = () => {
         window.print();
@@ -113,11 +107,10 @@ export function ContractDetail({ contract }: { contract: any }) {
     const handleSave = async () => {
         setLoading(true);
         try {
-            // Update data with witness signatures
+            // Update data locally
             const updatedData = {
                 ...data,
-                witness1Signature: witness1Sig,
-                witness2Signature: witness2Sig
+                // Keep witness sigs in data for backward compat if needed, but redundant now
             };
 
             await fetch(`/api/contracts/${contract.id}`, {
@@ -126,7 +119,9 @@ export function ContractDetail({ contract }: { contract: any }) {
                 body: JSON.stringify({
                     data: JSON.stringify(updatedData),
                     lessorSignature: lessorSig,
-                    lesseeSignature: lesseeSig
+                    lesseeSignature: lesseeSig,
+                    witness1Signature: witness1Sig,
+                    witness2Signature: witness2Sig
                 }),
             });
 
@@ -134,6 +129,8 @@ export function ContractDetail({ contract }: { contract: any }) {
             setData(updatedData);
             contract.lessorSignature = lessorSig;
             contract.lesseeSignature = lesseeSig;
+            contract.witness1Signature = witness1Sig;
+            contract.witness2Signature = witness2Sig;
 
             setIsEditing(false);
             setIsEditingTerms(false);
@@ -160,26 +157,21 @@ export function ContractDetail({ contract }: { contract: any }) {
         // Standard Lease Maps
         flat['lessorSignature'] = lessorSig || contract.lessorSignature || '';
         flat['lesseeSignature'] = lesseeSig || contract.lesseeSignature || '';
-        flat['witness1Signature'] = witness1Sig || data.witness1Signature || '';
-        flat['witness2Signature'] = witness2Sig || data.witness2Signature || '';
+        flat['witness1Signature'] = witness1Sig || contract.witness1Signature || data.witness1Signature || '';
+        flat['witness2Signature'] = witness2Sig || contract.witness2Signature || data.witness2Signature || '';
 
         // Receipt Maps (Reuse Lessor/Lessee slots)
         flat['collectorSignature'] = lessorSig || contract.lessorSignature || '';
         flat['payerSignature'] = lesseeSig || contract.lesseeSignature || '';
 
         return flat;
-    }, [data, contract.signature, contract.lessorSignature, contract.lesseeSignature, lessorSig, lesseeSig, witness1Sig, witness2Sig]);
+    }, [data, contract, lessorSig, lesseeSig, witness1Sig, witness2Sig]);
 
     // Render custom layout if available
     const renderLayout = () => {
         if (!data.layout) return null;
 
         let html = data.layout;
-
-        // --- STANDARDIZATION LOGIC REMOVED ---
-        // We now rely on the 'data.layout' from the database (or custom edits) to be correct.
-        // This allows the "Edit Terms" feature to work without being overridden.
-        // -------------------------------------
 
         // --- PATCH LOGIC FOR DUAL SIGNING (Only for Lease/Buy) ---
         if (!isReceipt) {
@@ -351,14 +343,19 @@ export function ContractDetail({ contract }: { contract: any }) {
                                 <button
                                     onClick={() => {
                                         if (confirm('ยืนยันการรีเซ็ตรูปแบบเอกสารเป็นค่าเริ่มต้น? (การแก้ไข Layout ทั้งหมดจะหายไป)')) {
-                                            let newLayout = DEFAULT_LEASE_LAYOUT;
-                                            const type = contract.type;
-                                            if (type === 'BUY') newLayout = DEFAULT_BUY_LAYOUT;
-                                            else if (type === 'RECEIPT') newLayout = DEFAULT_RECEIPT_LAYOUT;
-                                            else if (type === 'AGENCY' || type === 'OPEN_AGENCY') newLayout = DEFAULT_AGENCY_LAYOUT;
-                                            else if (type === 'RESERVATION' || type === 'RESERVATION_AGREEMENT') newLayout = DEFAULT_RESERVATION_LAYOUT;
-
-                                            setData({ ...data, layout: newLayout });
+                                            // Use the original template content if available
+                                            if (contract.template && contract.template.content) {
+                                                try {
+                                                    const templateData = JSON.parse(contract.template.content);
+                                                    if (templateData.layout) {
+                                                        setData({ ...data, layout: templateData.layout });
+                                                        return;
+                                                    }
+                                                } catch (e) {
+                                                    console.error("Error parsing template", e);
+                                                }
+                                            }
+                                            alert("ไม่สามารถรีเซ็ตได้: ไม่พบข้อมูล Template ต้นฉบับ");
                                         }
                                     }}
                                     className="text-xs bg-white border border-yellow-300 px-2 py-1 rounded hover:bg-yellow-100 flex items-center gap-1"

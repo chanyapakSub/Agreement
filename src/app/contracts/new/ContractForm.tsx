@@ -206,6 +206,10 @@ export function ContractForm({ templates }: { templates: any[] }) {
 
         const projectName = findValue('projectName');
 
+        // Try to find names if condo/room not available
+        const lesseeName = findValue('lesseeName'); // Common field name?
+        const lesseeNameTh = findValue('lesseeNameTh');
+
         let identifier = 'New Contract';
         if (room && condo) {
             identifier = `${room} - ${condo}`;
@@ -215,6 +219,10 @@ export function ContractForm({ templates }: { templates: any[] }) {
             identifier = `${paymentFor} (ใบเสร็จ)`;
         } else if (projectName) {
             identifier = `${projectName} (ใบจอง)`;
+        } else if (lesseeName || lesseeNameTh) {
+            identifier = `${lesseeName || lesseeNameTh} - ${new Date().toLocaleDateString('th-TH')}`;
+        } else {
+            identifier = `Contract ${new Date().toLocaleDateString('th-TH')} ${new Date().toLocaleTimeString('th-TH')}`;
         }
 
         try {
@@ -391,13 +399,14 @@ export function ContractForm({ templates }: { templates: any[] }) {
                                             onClick={() => {
                                                 const newData = { ...formData };
                                                 const s = newData.sections.find((s: any) => s.id === section.id);
-                                                const timestamp = Date.now();
+                                                const timestamp = `${Date.now()}_${Math.floor(Math.random() * 1000)}`;
                                                 s.fields.push(
                                                     { id: `custom_${timestamp}_qty`, label: 'รายการใหม่ (จำนวน)', type: 'text', placeholder: '1', value: '' },
                                                     { id: `custom_${timestamp}_note`, label: 'รายการใหม่ (หมายเหตุ)', type: 'text', value: '' }
                                                 );
                                                 setFormData(newData);
                                             }}
+
                                             className="text-sm text-blue-600 hover:text-blue-800 font-medium flex items-center gap-2 px-2 py-1 rounded hover:bg-blue-50"
                                         >
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
