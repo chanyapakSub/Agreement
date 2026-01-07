@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
-import * as XLSX from 'xlsx';
+import ExcelJS from 'exceljs';
 
 export async function GET() {
     const contracts = await prisma.contract.findMany({
@@ -27,28 +27,51 @@ export async function GET() {
             return '';
         };
 
+        // Note: The key used here must match the 'key' property in worksheet.columns below
         return {
-            'เลขห้อง': findValue('roomNumber'),
-            'คอนโด': findValue('condoName'),
-            'วันเข้า': findValue('startDate'),
-            'วันหมดสัญญา': findValue('endDate'),
-            'วันที่ทำสัญญา': findValue('contractDate'),
-            'ผู้ให้เช่า': findValue('lessor'),
-            'ผู้เช่า': findValue('lessee'),
-            'ค่าเช่า': findValue('rentAmount'),
-            'เงินประกัน': findValue('deposit'),
-            'ระยะเวลา (เดือน)': findValue('duration'),
-            'สถานะ': c.status,
-            'วันที่สร้าง': c.createdAt.toISOString().split('T')[0],
-            'วันที่เซ็น': c.signedAt ? c.signedAt.toISOString().split('T')[0] : '',
+            'roomNumber': findValue('roomNumber'),
+            'condoName': findValue('condoName'),
+            'startDate': findValue('startDate'),
+            'endDate': findValue('endDate'),
+            'contractDate': findValue('contractDate'),
+            'lessor': findValue('lessor'),
+            'lessee': findValue('lessee'),
+            'rentAmount': findValue('rentAmount'),
+            'deposit': findValue('deposit'),
+            'duration': findValue('duration'),
+            'status': c.status,
+            'createdAt': c.createdAt.toISOString().split('T')[0],
+            'signedAt': c.signedAt ? c.signedAt.toISOString().split('T')[0] : '',
         };
     });
 
-    const worksheet = XLSX.utils.json_to_sheet(rows);
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, "Contracts");
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet('Contracts');
 
-    const buf = XLSX.write(workbook, { type: "buffer", bookType: "xlsx" });
+    // Define columns
+    worksheet.columns = [
+        { header: 'เลขห้อง', key: 'roomNumber', width: 15 },
+        { header: 'คอนโด', key: 'condoName', width: 25 },
+        { header: 'วันเข้า', key: 'startDate', width: 15 },
+        { header: 'วันหมดสัญญา', key: 'endDate', width: 15 },
+        { header: 'วันที่ทำสัญญา', key: 'contractDate', width: 15 },
+        { header: 'ผู้ให้เช่า', key: 'lessor', width: 20 },
+        { header: 'ผู้เช่า', key: 'lessee', width: 20 },
+        { header: 'ค่าเช่า', key: 'rentAmount', width: 15 },
+        { header: 'เงินประกัน', key: 'deposit', width: 15 },
+        { header: 'ระยะเวลา (เดือน)', key: 'duration', width: 15 },
+        { header: 'สถานะ', key: 'status', width: 15 },
+        { header: 'วันที่สร้าง', key: 'createdAt', width: 15 },
+        { header: 'วันที่เซ็น', key: 'signedAt', width: 15 },
+    ];
+
+    // Add rows
+    worksheet.addRows(rows);
+
+    // Style Header Row (Optional but nice)
+    worksheet.getRow(1).font = { bold: true };
+
+    const buf = await workbook.xlsx.writeBuffer();
 
     return new NextResponse(buf, {
         headers: {
