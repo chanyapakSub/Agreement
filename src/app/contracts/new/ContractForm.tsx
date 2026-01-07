@@ -9,13 +9,6 @@ import { CONTRACT_TYPE_OPTIONS, getContractType } from '../../../lib/contract-ty
 
 export function ContractForm({ templates }: { templates: any[] }) {
     const router = useRouter();
-    const [selectedTemplateId, setSelectedTemplateId] = useState(templates[0]?.id || '');
-    const [contractType, setContractType] = useState('LEASE');
-    const [formData, setFormData] = useState<any>(null);
-    const [visibleLessees, setVisibleLessees] = useState(1);
-
-    const [loading, setLoading] = useState(false);
-
     // Helper to filter templates based on type definition
     const getApplicableTemplates = (typeId: string) => {
         const typeDef = getContractType(typeId);
@@ -51,6 +44,16 @@ export function ContractForm({ templates }: { templates: any[] }) {
             return hasKeyword;
         });
     };
+
+    const [contractType, setContractType] = useState('LEASE');
+    const [selectedTemplateId, setSelectedTemplateId] = useState(() => {
+        const leaseTemplates = getApplicableTemplates('LEASE');
+        return leaseTemplates.length > 0 ? leaseTemplates[0].id : (templates[0]?.id || '');
+    });
+    const [formData, setFormData] = useState<any>(null);
+    const [visibleLessees, setVisibleLessees] = useState(1);
+
+    const [loading, setLoading] = useState(false);
 
     const selectedTemplate = templates.find(t => t.id === selectedTemplateId);
     useEffect(() => {
