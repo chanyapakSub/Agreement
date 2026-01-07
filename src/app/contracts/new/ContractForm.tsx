@@ -38,7 +38,11 @@ export function ContractForm({ templates }: { templates: any[] }) {
             // Actually, let's strictly follow the config.
 
             if (typeId === 'LEASE') {
-                return true;
+                // Special compatibility: Also include if it doesn't match ignored keywords but DOES'T match strict keywords?
+                // Let's just use the config keywords.
+                // But enable the "everything else" logic if keywords don't match?
+                // No, cleaner to just match keywords.
+                return hasKeyword || (!name.includes('receipt') && !name.includes('ใบรับเงิน') && !name.includes('ซื้อ') && !name.includes('buy'));
             }
 
             return hasKeyword;
