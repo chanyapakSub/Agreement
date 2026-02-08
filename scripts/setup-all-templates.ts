@@ -1012,6 +1012,189 @@ import fs from 'fs';
 import path from 'path';
 
 // Load Lease Data
+const DEFAULT_RECEIPT_SECTIONS = [
+    {
+        id: "sec_info",
+        title: "ข้อมูลใบเสร็จ",
+        fields: [
+            { id: "contractDate", label: "วันที่ (Date)", type: "date" },
+            { id: "receivedFrom", label: "ได้รับเงินจาก (Received From)", type: "text", placeholder: "ชื่อ-นามสกุล หรือ บริษัท" },
+            { id: "address", label: "ที่อยู่ (Address)", type: "textarea", placeholder: "ที่อยู่ผู้จ่ายเงิน" },
+            { id: "paymentFor", label: "เพื่อชำระค่า (In Payment of)", type: "text", placeholder: "ค่าเช่า/ค่ามัดจำ/อื่นๆ" },
+            { id: "amount", label: "รวมเป็นเงินทั้งสิ้น (Total Amount)", type: "number" },
+            { id: "collectorSignature", label: "ลายเซ็นผู้รับเงิน (Collector)", type: "signature" },
+            { id: "payerSignature", label: "ลายเซ็นผู้จ่ายเงิน (Payer)", type: "signature" },
+        ]
+    }
+];
+
+const DEFAULT_RECEIPT_LAYOUT = `<style>
+  @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@400;700&display=swap');
+  @media print {
+    @page {
+      size: A4;
+      margin: 20mm;
+    }
+    body {
+      padding: 0;
+      margin: 0;
+    }
+  }
+  
+  .signature-footer {
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-end;
+    padding-top: 10px;
+    font-family: 'Sarabun', sans-serif;
+    font-size: 8pt;
+    width: 100%;
+  }
+  
+  .signature-box {
+    text-align: center;
+    width: 45%;
+  }
+</style>
+
+<div class="max-w-[210mm] mx-auto leading-normal text-black" style="font-family: 'Sarabun', sans-serif; font-size: 10pt;">
+  <table style="width: 100%; border-collapse: collapse;">
+    <!-- Content Body -->
+    <tbody>
+      <tr>
+        <td style="vertical-align: top;">
+          <div class="p-8">
+
+            <!--Header -->
+              <div class="flex justify-between items-start mb-4">
+                <div class="w-1/3">
+                  <img src="/logo_PL_property.png" alt="PL Property" class="h-20 object-contain" />
+                </div>
+
+                <div class="text-center w-1/3">
+                  <div class="font-bold text-2xl">ใบเสร็จรับเงิน</div>
+                  <div class="font-bold text-xl">RECEIPT</div>
+                </div>
+
+                <div class="w-1/3 text-right">
+                    <div class="inline-block text-left">
+                        <span class="font-bold">วันที่</span> <span class="border-b border-dotted border-black min-w-[100px] inline-block text-center">{{contractDate}}</span><br>
+                        <span class="font-bold">Date</span>
+                    </div>
+                </div>
+              </div>
+
+            <!--Body -->
+            <div class="space-y-4 mt-8">
+
+              <!--Received From-->
+              <div>
+                  <div class="flex items-end">
+                    <div class="w-32 font-bold whitespace-nowrap">ได้รับเงินจาก</div>
+                    <div class="flex-1 border-b border-dotted border-black relative">
+                        <span class="absolute bottom-1 w-full text-center">{{receivedFrom}}</span>
+                        &nbsp;
+                    </div>
+                  </div>
+                  <div class="font-bold mb-2 text-sm text-gray-600">Received From</div>
+              </div>
+
+               <!--Address-->
+               <div>
+                  <div class="flex items-end">
+                    <div class="w-32 font-bold whitespace-nowrap">ที่อยู่</div>
+                    <div class="flex-1 border-b border-dotted border-black relative">
+                        <span class="absolute bottom-1 w-full text-left">{{address}}</span>
+                        &nbsp;
+                    </div>
+                  </div>
+                  <div class="font-bold mb-2 text-sm text-gray-600">Address</div>
+              </div>
+
+               <!--In Payment of-->
+               <div>
+                  <div class="flex items-end">
+                    <div class="w-32 font-bold whitespace-nowrap">เพื่อชำระค่า</div>
+                    <div class="flex-1 border-b border-dotted border-black relative">
+                        <span class="absolute bottom-1 w-full text-center">{{paymentFor}}</span>
+                        &nbsp;
+                    </div>
+                  </div>
+                  <div class="font-bold mb-2 text-sm text-gray-600">In Payment of</div>
+              </div>
+
+               <!--Total Payment-->
+               <div class="mt-8 border-t border-b py-4">
+                  <div class="flex items-center">
+                    <div class="w-40 font-bold whitespace-nowrap">รวมเป็นเงินทั้งสิ้น</div>
+                    <div class="flex-1 border-b border-dotted border-black relative text-center text-lg font-bold">
+                        {{amount:thai}}
+                    </div>
+                    <div class="w-16 text-right font-bold ml-2">บาท</div>
+                  </div>
+                  <div class="flex items-center mt-2">
+                    <div class="w-40 font-bold whitespace-nowrap text-sm text-gray-600">Total of Payment</div>
+                    <div class="flex-1 text-center font-bold text-lg">
+                        {{amount:english}}
+                    </div>
+                    <div class="w-16 text-right font-bold ml-2 text-sm text-gray-600">THB</div>
+                  </div>
+               </div>
+
+               <!--Amount Box Highlight-->
+               <div class="flex justify-end mt-4 mb-8">
+                <div class="bg-gray-100 px-6 py-2 text-2xl font-bold min-w-[250px] text-center border-2 border-gray-400 rounded">
+                    {{amount}} .-
+                </div>
+               </div>
+
+                <!--Payment Method-->
+                <div class="mb-2 space-y-0.5 mt-8">
+                    <div class="flex items-center gap-2">
+                        <div class="w-4 h-4 border border-black inline-block"></div> <span>เงินสด (Cash)</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <div class="w-4 h-4 border border-black inline-block"></div> <span>โอนเงิน (Transfer)</span>
+                    </div>
+                     <div class="flex items-center gap-2">
+                        <div class="w-4 h-4 border border-black inline-block"></div> <span>เช็ค (Cheque)</span>
+                    </div>
+                </div>
+
+            </div>
+
+          </div>
+        </td>
+      </tr>
+    </tbody>
+    <tfoot>
+      <tr>
+        <td style="height: 30mm; vertical-align: bottom;">
+            <div class="signature-footer">
+              <div class="signature-box" style="text-align: center; width: 45%;">
+                <div style="position: relative; height: 50px; margin-bottom: 5px;">
+                   <div style="position: absolute; bottom: 0; width: 100%; z-index: 10;">
+                        ลงชื่อ <span style="border-bottom: 1px dotted black; width: 150px; display: inline-block;"></span> ผู้รับเงิน
+                   </div>
+                   <img src="{{collectorSignature}}" style="height: 40px; position: absolute; bottom: 5px; left: 50%; transform: translateX(-50%); z-index: 20; display: {{collectorSignature ? 'block' : 'none'}}" />
+                </div>
+                <div>Collector</div>
+              </div>
+              <div class="signature-box" style="text-align: center; width: 45%;">
+                <div style="position: relative; height: 50px; margin-bottom: 5px;">
+                   <div style="position: absolute; bottom: 0; width: 100%; z-index: 10;">
+                        ลงชื่อ <span style="border-bottom: 1px dotted black; width: 150px; display: inline-block;"></span> ผู้จ่ายเงิน
+                   </div>
+                   <img src="{{payerSignature}}" style="height: 40px; position: absolute; bottom: 5px; left: 50%; transform: translateX(-50%); z-index: 20; display: {{payerSignature ? 'block' : 'none'}}" />
+                </div>
+                <div>Payer</div>
+              </div>
+            </div>
+        </td>
+      </tr>
+    </tfoot>
+  </table>
+</div>`;
 const leaseDataPath = path.join(__dirname, 'lease_template_data.json');
 const leaseData = JSON.parse(fs.readFileSync(leaseDataPath, 'utf-8'));
 
@@ -1079,6 +1262,15 @@ const templates = [
         name: 'สัญญาเช่ามาตรฐาน (Standard Lease Agreement)',
         keyword: 'สัญญาเช่ามาตรฐาน',
         content: leaseData
+    },
+    {
+        name: 'ใบเสร็จรับเงิน (Receipt)',
+        keyword: 'ใบเสร็จรับเงิน',
+        content: {
+            title: "ใบเสร็จรับเงิน (Receipt)",
+            sections: DEFAULT_RECEIPT_SECTIONS,
+            layout: DEFAULT_RECEIPT_LAYOUT
+        }
     }
 ];
 

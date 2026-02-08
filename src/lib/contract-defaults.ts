@@ -241,7 +241,7 @@ export const DEFAULT_LEASE_LAYOUT = `<style>
     align-items: flex-end;
     padding-top: 10px;
     font-family: 'Sarabun', sans-serif;
-    font-size: 12pt;
+    font-size: 8pt;
     width: 100%;
   }
   
@@ -266,20 +266,20 @@ export const DEFAULT_LEASE_LAYOUT = `<style>
   }
 </style>
 
-<div class="max-w-[210mm] mx-auto leading-relaxed text-black" style="font-family: 'Sarabun', sans-serif; font-size: 14pt;">
+<div class="max-w-[210mm] mx-auto leading-relaxed text-black" style="font-family: 'Sarabun', sans-serif; font-size: 10pt;">
   <table style="width: 100%; border-collapse: collapse;">
     <!-- Content Body -->
     <tbody>
       <tr>
         <td style="vertical-align: top;">
 
-<div class="max-w-[210mm] mx-auto p-8 leading-relaxed text-black" style="font-family: 'Sarabun', sans-serif; font-size: 14pt;">
+<div class="max-w-[210mm] mx-auto p-8 leading-relaxed text-black" style="font-family: 'Sarabun', sans-serif; font-size: 10pt;">
   <div class="flex justify-between items-start mb-6">
       <div class="w-1/3">
           <img src="/logo_PL_property.png" alt="PL Property" class="h-20 object-contain" />
       </div>
       <div class="w-1/3 text-center">
-          <h1 class="font-bold" style="font-size: 16pt;">LEASE AGREEMENT<br>สัญญาเช่า</h1>
+          <h1 class="font-bold" style="font-size: 12pt;">LEASE AGREEMENT<br>สัญญาเช่า</h1>
       </div>
       <div class="w-1/3 text-right">
           Date/วันที่ <span class="font-bold border-b border-dotted border-black px-2">{{contractDate}}</span>
@@ -495,26 +495,52 @@ export const DEFAULT_LEASE_LAYOUT = `<style>
 
 
   
-  <div class="mt-8 grid grid-cols-2 gap-12 text-sm text-gray-500">
+  <div class="mt-8 grid grid-cols-2 gap-12 text-black" style="break-inside: avoid; page-break-inside: avoid;">
     <div class="text-center">
-        <div class="border-b border-gray-300 w-3/4 mx-auto mb-2 h-12"></div>
-        <p>พยาน (Witness)</p>
+        <div class="relative h-[50px] mb-2">
+            <div class="absolute bottom-0 w-full z-10 text-[10pt] font-bold">
+                ลงชื่อ <span class="border-b border-dotted border-black w-[150px] inline-block"></span> ผู้ให้เช่า
+            </div>
+            <img src="{{lessorSignature}}" class="h-[30px] max-w-[140px] object-contain absolute bottom-[5px] left-1/2 -translate-x-1/2 z-20" style="display: {{lessorSignature ? 'block' : 'none'}}" />
+        </div>
+        <div class="text-[10pt]">Lessor</div>
     </div>
     <div class="text-center">
-        <div class="border-b border-gray-300 w-3/4 mx-auto mb-2 h-12"></div>
-        <p>พยาน (Witness)</p>
+        <div class="relative h-[50px] mb-2">
+            <div class="absolute bottom-0 w-full z-10 text-[10pt] font-bold">
+                ลงชื่อ <span class="border-b border-dotted border-black w-[150px] inline-block"></span> ผู้เช่า
+            </div>
+            <img src="{{lesseeSignature}}" class="h-[30px] max-w-[140px] object-contain absolute bottom-[5px] left-1/2 -translate-x-1/2 z-20" style="display: {{lesseeSignature ? 'block' : 'none'}}" />
+        </div>
+        <div class="text-[10pt]">Lessee</div>
+    </div>
+    <div class="text-center">
+        <div class="h-16 flex items-end justify-center relative">
+             <div class="border-b border-dotted border-black w-3/4 mx-auto mb-1"></div>
+             <img src="{{witness1Signature}}" class="h-14 absolute bottom-1" style="display: {{witness1Signature ? 'block' : 'none'}}" />
+        </div>
+        <p style="font-size: 10pt; font-weight: bold;">พยาน (Witness)</p>
+        <div class="mt-2" style="font-size: 10pt;">(..................................................................)</div>
+    </div>
+    <div class="text-center">
+        <div class="h-16 flex items-end justify-center relative">
+             <div class="border-b border-dotted border-black w-3/4 mx-auto mb-1"></div>
+             <img src="{{witness2Signature}}" class="h-14 absolute bottom-1" style="display: {{witness2Signature ? 'block' : 'none'}}" />
+        </div>
+        <p style="font-size: 10pt; font-weight: bold;">พยาน (Witness)</p>
+        <div class="mt-2" style="font-size: 10pt;">(..................................................................)</div>
     </div>
   </div>
   <div class="break-before-page">
-    <h2 class="font-bold text-center mb-4" style="font-size: 14pt;">กุญแจและเครื่องใช้ไฟฟ้า/Key and Electrical appliances</h2>
+    <h2 class="font-bold text-center mb-4" style="font-size: 10pt;">กุญแจและเครื่องใช้ไฟฟ้า/Key and Electrical appliances</h2>
     {{sec_appliances_table}}
 
-    <h2 class="font-bold text-center mb-4" style="font-size: 14pt;">เฟอร์นิเจอร์/ Furniture</h2>
+    <h2 class="font-bold text-center mb-4" style="font-size: 10pt;">เฟอร์นิเจอร์/ Furniture</h2>
     {{sec_furniture_table}}
   </div>
 
   <div class="mt-8 break-before-page">
-    <h2 class="font-bold mb-4" style="font-size: 16pt;">เอกสารแนบท้าย (Attachments)</h2>
+    <h2 class="font-bold mb-4" style="font-size: 12pt;">เอกสารแนบท้าย (Attachments)</h2>
     
     <div class="space-y-4">
         <div class="break-inside-avoid">
@@ -702,7 +728,7 @@ export const DEFAULT_BUY_LAYOUT = `<style>
     align-items: flex-end;
     padding-top: 10px;
     font-family: 'Sarabun', sans-serif;
-    font-size: 12pt;
+    font-size: 8pt;
     width: 100%;
   }
   
@@ -727,7 +753,7 @@ export const DEFAULT_BUY_LAYOUT = `<style>
   }
 </style>
 
-<div class="max-w-[210mm] mx-auto leading-relaxed text-black" style="font-family: 'Sarabun', sans-serif; font-size: 14pt;">
+<div class="max-w-[210mm] mx-auto leading-relaxed text-black" style="font-family: 'Sarabun', sans-serif; font-size: 10pt;">
   <table style="width: 100%; border-collapse: collapse;">
     <!-- Content Body -->
     <tbody>
@@ -809,21 +835,21 @@ export const DEFAULT_BUY_LAYOUT = `<style>
     <!--Signatures -->
 
 
-    <div class="mt-12 grid grid-cols-2 gap-12 break-inside-avoid">
+    <div class="mt-12 grid grid-cols-2 gap-12 break-inside-avoid" style="page-break-inside: avoid;">
         <div class="text-center">
-            <div class="mb-1">ลงชื่อ .......................................... พยาน</div>
+            <div class="mb-1" style="font-size: 10pt;">ลงชื่อ .......................................... พยาน</div>
             <div class="h-16 flex items-end justify-center relative">
                     <img src="{{witness1Signature}}" class="h-14 absolute bottom-0 max-w-full" style="display: {{witness1Signature ? 'block' : 'none'}}" />
             </div>
-            <div>( <span class="inline-block min-w-[200px] border-b border-dotted border-black">{{witness1Name}}</span> )</div>
+            <div style="font-size: 10pt;">( <span class="inline-block min-w-[200px] border-b border-dotted border-black text-center">{{witness1Name}}</span> )</div>
         </div>
         
         <div class="text-center">
-            <div class="mb-1">ลงชื่อ .......................................... พยาน</div>
+            <div class="mb-1" style="font-size: 10pt;">ลงชื่อ .......................................... พยาน</div>
                 <div class="h-16 flex items-end justify-center relative">
                     <img src="{{witness2Signature}}" class="h-14 absolute bottom-0 max-w-full" style="display: {{witness2Signature ? 'block' : 'none'}}" />
             </div>
-            <div>( <span class="inline-block min-w-[200px] border-b border-dotted border-black">{{witness2Name}}</span> )</div>
+            <div style="font-size: 10pt;">( <span class="inline-block min-w-[200px] border-b border-dotted border-black text-center">{{witness2Name}}</span> )</div>
         </div>
     </div>
 
@@ -879,7 +905,7 @@ export const DEFAULT_AGENCY_LAYOUT = `<style>
     align-items: flex-end;
     padding-top: 10px;
     font-family: 'Sarabun', sans-serif;
-    font-size: 12pt;
+    font-size: 8pt;
     width: 100%;
   }
   
@@ -904,7 +930,7 @@ export const DEFAULT_AGENCY_LAYOUT = `<style>
   }
 </style>
 
-<div class="max-w-[210mm] mx-auto leading-relaxed text-black" style="font-family: 'Sarabun', sans-serif; font-size: 14pt;">
+<div class="max-w-[210mm] mx-auto leading-relaxed text-black" style="font-family: 'Sarabun', sans-serif; font-size: 10pt;">
   <table style="width: 100%; border-collapse: collapse;">
     <!-- Content Body -->
     <tbody>
@@ -1011,23 +1037,23 @@ export const DEFAULT_AGENCY_LAYOUT = `<style>
     <!--Signatures -->
 
 
-    <div class="mt-8 grid grid-cols-2 gap-8 break-inside-avoid">
+    <div class="mt-8 grid grid-cols-2 gap-8 break-inside-avoid" style="page-break-inside: avoid;">
         <div class="text-center">
-            <div class="mb-1">ลงชื่อ .......................................... พยาน 1</div>
+            <div class="mb-1" style="font-size: 10pt;">ลงชื่อ .......................................... พยาน 1</div>
             <div class="h-16 flex items-end justify-center relative">
                     <img src="{{witness1Signature}}" class="h-14 absolute bottom-0 max-w-full" style="display: {{witness1Signature ? 'block' : 'none'}}" />
             </div>
-            <div>( <span class="inline-block min-w-[200px] border-b border-dotted border-black">{{witness1Name}}</span> )</div>
-            <div class="mt-1">ชื่อ-สกุล</div>
+            <div style="font-size: 10pt;">( <span class="inline-block min-w-[200px] border-b border-dotted border-black text-center">{{witness1Name}}</span> )</div>
+            <div class="mt-1" style="font-size: 10pt;">ชื่อ-สกุล</div>
         </div>
         
         <div class="text-center">
-            <div class="mb-1">ลงชื่อ .......................................... พยาน 2</div>
+            <div class="mb-1" style="font-size: 10pt;">ลงชื่อ .......................................... พยาน 2</div>
                 <div class="h-16 flex items-end justify-center relative">
                     <img src="{{witness2Signature}}" class="h-14 absolute bottom-0 max-w-full" style="display: {{witness2Signature ? 'block' : 'none'}}" />
             </div>
-            <div>( <span class="inline-block min-w-[200px] border-b border-dotted border-black">{{witness2Name}}</span> )</div>
-            <div class="mt-1">ชื่อ-สกุล</div>
+            <div style="font-size: 10pt;">( <span class="inline-block min-w-[200px] border-b border-dotted border-black text-center">{{witness2Name}}</span> )</div>
+            <div class="mt-1" style="font-size: 10pt;">ชื่อ-สกุล</div>
         </div>
     </div>
 
@@ -1135,7 +1161,7 @@ export const DEFAULT_RESERVATION_LAYOUT = `<style>
     align-items: flex-end;
     padding-top: 10px;
     font-family: 'Sarabun', sans-serif;
-    font-size: 12pt;
+    font-size: 8pt;
     width: 100%;
   }
   
@@ -1160,7 +1186,7 @@ export const DEFAULT_RESERVATION_LAYOUT = `<style>
   }
 </style>
 
-<div class="max-w-[210mm] mx-auto leading-normal text-black" style="font-family: 'Sarabun', sans-serif; font-size: 14pt;">
+<div class="max-w-[210mm] mx-auto leading-normal text-black" style="font-family: 'Sarabun', sans-serif; font-size: 10pt;">
   <table style="width: 100%; border-collapse: collapse;">
     <!-- Content Body -->
     <tbody>
@@ -1332,7 +1358,7 @@ export const DEFAULT_RECEIPT_LAYOUT = `<style>
     align-items: flex-end;
     padding-top: 10px;
     font-family: 'Sarabun', sans-serif;
-    font-size: 12pt;
+    font-size: 8pt;
     width: 100%;
   }
   
@@ -1357,7 +1383,7 @@ export const DEFAULT_RECEIPT_LAYOUT = `<style>
   }
 </style>
 
-<div class="max-w-[210mm] mx-auto leading-normal text-black" style="font-family: 'Sarabun', sans-serif; font-size: 14pt;">
+<div class="max-w-[210mm] mx-auto leading-normal text-black" style="font-family: 'Sarabun', sans-serif; font-size: 10pt;">
   <table style="width: 100%; border-collapse: collapse;">
     <!-- Content Body -->
     <tbody>
